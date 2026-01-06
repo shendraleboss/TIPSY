@@ -159,7 +159,7 @@ const resources = {
       
       // Tip Page (Customer)
       'tip.title': 'Pourboire pour',
-      'tip.select.amount': 'Sélectionnez le montant du pourboire',
+      'tip.select.amount': 'Sélectionne le montant du pourboire',
       'tip.custom': 'Personnalisé',
       'tip.or': 'ou',
       'tip.continue': 'Continuer',
@@ -174,8 +174,8 @@ const resources = {
       
       // Success
       'success.title': 'Merci!',
-      'success.subtitle': 'Votre pourboire a été envoyé',
-      'success.slogan': 'Get Tipsy. Parce que vous le méritez.',
+      'success.subtitle': 'Ton pourboire a été envoyé',
+      'success.slogan': 'Get Tipsy. Parce que tu le mérites.',
       'success.processing': 'Traitement du paiement...',
       
       // Common

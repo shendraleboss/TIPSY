@@ -12,6 +12,14 @@ const resources = {
       'landing.hero.description2': 'No boss. No middleman. Just fair tips that go straight to you.',
       'landing.hero.cta': 'Start Earning',
       'landing.how.title': 'How it works',
+      
+      // Landing - Tips are
+      'landing.tips.title': 'A tip is...',
+      'landing.tips.uber': 'an Uber ride home',
+      'landing.tips.drink': 'a well-deserved drink',
+      'landing.tips.kebab': 'a 2am kebab',
+      'landing.tips.treat': 'a little treat',
+      'landing.tips.moment': 'a moment for yourself',
       'landing.how.step1.title': 'Create your profile',
       'landing.how.step1.desc': 'Sign up in under 2 minutes',
       'landing.how.step2.title': 'Get your QR code',

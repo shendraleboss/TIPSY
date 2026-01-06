@@ -110,16 +110,16 @@ const resources = {
     translation: {
       // Landing
       'landing.hero.title': 'Get Tipsy',
-      'landing.hero.subtitle': 'Parce que vous le méritez.',
-      'landing.hero.description': '100% des pourboires vous reviennent directement. Aucun employeur, aucun intermédiaire. Juste des pourboires équitables.',
+      'landing.hero.subtitle': 'Parce que tu le mérites.',
+      'landing.hero.description': '100% des pourboires te reviennent directement. Aucun employeur, aucun intermédiaire. Juste des pourboires équitables.',
       'landing.hero.cta': 'Commencer à gagner',
       'landing.how.title': 'Comment ça marche',
-      'landing.how.step1.title': 'Créez votre profil',
-      'landing.how.step1.desc': 'Inscrivez-vous en moins de 2 minutes',
-      'landing.how.step2.title': 'Obtenez votre QR code',
-      'landing.how.step2.desc': 'Imprimez-le ou affichez-le sur votre téléphone',
-      'landing.how.step3.title': 'Recevez des pourboires',
-      'landing.how.step3.desc': '100% de chaque pourboire vous revient',
+      'landing.how.step1.title': 'Crée ton profil',
+      'landing.how.step1.desc': 'Inscris-toi en moins de 2 minutes',
+      'landing.how.step2.title': 'Obtiens ton QR code',
+      'landing.how.step2.desc': 'Imprime-le ou affiche-le sur ton téléphone',
+      'landing.how.step3.title': 'Reçois des pourboires',
+      'landing.how.step3.desc': '100% de chaque pourboire te revient',
       
       // Auth
       'auth.title': 'Bienvenue sur Tipsy',

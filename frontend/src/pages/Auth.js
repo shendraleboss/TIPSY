@@ -28,7 +28,7 @@ const Auth = () => {
     setLoading(true);
     try {
       await axios.post(`${API}/auth/send-otp`, { phone });
-      toast.success('Code sent! (Mock: 123456)');
+      toast.success(t('auth.otp.sent'));
       setStep('otp');
     } catch (error) {
       toast.error(t('common.error'));

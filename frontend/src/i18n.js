@@ -25,6 +25,7 @@ const resources = {
       'auth.phone.placeholder': '+41 79 123 45 67',
       'auth.send.otp': 'Send Code',
       'auth.otp.sent': 'Code sent to your phone!',
+      'auth.phone.help': 'International format required (+41 for Switzerland, +33 for France, etc.)',
       'auth.otp.title': 'Enter verification code',
       'auth.otp.subtitle': 'We sent a code to',
       'auth.otp.label': 'Verification Code',

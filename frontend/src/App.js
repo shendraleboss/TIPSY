@@ -11,6 +11,9 @@ import Dashboard from '@/pages/Dashboard';
 import QRCodePage from '@/pages/QRCodePage';
 import TipPage from '@/pages/TipPage';
 import TipSuccess from '@/pages/TipSuccess';
+import TermsOfService from '@/pages/TermsOfService';
+import PrivacyPolicy from '@/pages/PrivacyPolicy';
+import LegalNotice from '@/pages/LegalNotice';
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
           <Route path="/qr-code" element={<QRCodePage />} />
           <Route path="/t/:serverId" element={<TipPage />} />
           <Route path="/tip-success" element={<TipSuccess />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/legal" element={<LegalNotice />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-center" richColors />

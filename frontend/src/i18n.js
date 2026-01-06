@@ -128,6 +128,7 @@ const resources = {
       'auth.phone.label': 'Numéro de téléphone',
       'auth.phone.placeholder': '+33 6 12 34 56 78',
       'auth.send.otp': 'Envoyer le code',
+      'auth.otp.sent': 'Code envoyé sur ton téléphone !',
       'auth.otp.title': 'Entre le code de vérification',
       'auth.otp.subtitle': 'Nous avons envoyé un code à',
       'auth.otp.label': 'Code de vérification',

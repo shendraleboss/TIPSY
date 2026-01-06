@@ -401,7 +401,7 @@ async def create_tip_checkout(tip_request: TipCheckoutRequest):
             session_id=session.id,
             server_id=tip_request.server_id,
             amount=total_to_charge,
-            currency="eur",
+            currency="chf",
             payment_status="pending",
             status="pending",
             metadata={

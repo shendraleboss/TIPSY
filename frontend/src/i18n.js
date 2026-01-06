@@ -126,7 +126,7 @@ const resources = {
       'auth.title': 'Bienvenue sur Tipsy',
       'auth.subtitle': 'Entre ton numéro de téléphone pour continuer',
       'auth.phone.label': 'Numéro de téléphone',
-      'auth.phone.placeholder': '+33 6 12 34 56 78',
+      'auth.phone.placeholder': '+41 79 123 45 67',
       'auth.send.otp': 'Envoyer le code',
       'auth.otp.sent': 'Code envoyé sur ton téléphone !',
       'auth.otp.title': 'Entre le code de vérification',

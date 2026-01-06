@@ -36,17 +36,35 @@ const Dashboard = () => {
   const loadData = async (serverId) => {
     setLoading(true);
     try {
-      const [statsRes, tipsRes] = await Promise.all([
+      const [statsRes, tipsRes, stripeRes] = await Promise.all([
         axios.get(`${API}/servers/${serverId}/stats`),
-        axios.get(`${API}/servers/${serverId}/tips`)
+        axios.get(`${API}/servers/${serverId}/tips`),
+        axios.get(`${API}/servers/${serverId}/stripe-connect/status`)
       ]);
 
       setStats(statsRes.data);
       setTips(tipsRes.data);
+      setStripeStatus(stripeRes.data);
     } catch (error) {
       toast.error(t('common.error'));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleConnectStripe = async () => {
+    setConnectingStripe(true);
+    try {
+      const response = await axios.post(`${API}/servers/${server.id}/stripe-connect/onboard`, {
+        refresh_url: `${window.location.origin}/dashboard`,
+        return_url: `${window.location.origin}/dashboard`
+      });
+      
+      // Redirect to Stripe onboarding
+      window.location.href = response.data.url;
+    } catch (error) {
+      toast.error('Error connecting Stripe');
+      setConnectingStripe(false);
     }
   };
 

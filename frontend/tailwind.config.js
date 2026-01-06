@@ -49,8 +49,7 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        unbounded: ['Unbounded', 'sans-serif'],
-        outfit: ['Outfit', 'sans-serif'],
+        quasimoda: ['Quasimoda', 'sans-serif'],
       },
     },
   },

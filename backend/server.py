@@ -105,9 +105,19 @@ class TipCheckoutRequest(BaseModel):
 async def root():
     return {"message": "Tipsy API"}
 
-# Auth routes (Twilio Verify)
+# Auth routes (Twilio Verify or Dev Mode)
 @api_router.post("/auth/send-otp")
 async def send_otp(request: SendOTPRequest):
+    if dev_mode:
+        # Development mode - use fixed OTP
+        logger.info(f"[DEV MODE] OTP for {request.phone}: {dev_otp_code}")
+        return {
+            "success": True,
+            "message": f"Code envoyé (DEV: {dev_otp_code})",
+            "status": "dev_mode"
+        }
+    
+    # Production mode - use Twilio
     try:
         verification = twilio_client.verify.services(twilio_verify_service).verifications.create(
             to=request.phone,
@@ -125,44 +135,52 @@ async def send_otp(request: SendOTPRequest):
 
 @api_router.post("/auth/verify-otp")
 async def verify_otp(request: VerifyOTPRequest):
-    try:
-        check = twilio_client.verify.services(twilio_verify_service).verification_checks.create(
-            to=request.phone,
-            code=request.otp
-        )
-        
-        is_valid = check.status == "approved"
-        
-        if not is_valid:
+    if dev_mode:
+        # Development mode - check against fixed OTP
+        if request.otp != dev_otp_code:
             raise HTTPException(status_code=400, detail="Invalid OTP")
         
-        # Check if server exists
-        server_doc = await db.servers.find_one({"phone": request.phone}, {"_id": 0})
-        
-        if server_doc:
-            # Update verification record
-            await db.phone_verifications.update_one(
-                {"phone_number": request.phone, "verified": False},
-                {"$set": {"verified": True, "verified_at": datetime.now(timezone.utc).isoformat()}},
-                upsert=True
+        logger.info(f"[DEV MODE] OTP verified for {request.phone}")
+    else:
+        # Production mode - verify with Twilio
+        try:
+            check = twilio_client.verify.services(twilio_verify_service).verification_checks.create(
+                to=request.phone,
+                code=request.otp
             )
             
-            return {
-                "success": True,
-                "is_new_user": False,
-                "server": server_doc
-            }
+            is_valid = check.status == "approved"
+            
+            if not is_valid:
+                raise HTTPException(status_code=400, detail="Invalid OTP")
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Error verifying OTP: {e}")
+            raise HTTPException(status_code=400, detail=f"Failed to verify OTP: {str(e)}")
+    
+    # Check if server exists (same for both modes)
+    server_doc = await db.servers.find_one({"phone": request.phone}, {"_id": 0})
+    
+    if server_doc:
+        # Update verification record
+        await db.phone_verifications.update_one(
+            {"phone_number": request.phone, "verified": False},
+            {"$set": {"verified": True, "verified_at": datetime.now(timezone.utc).isoformat()}},
+            upsert=True
+        )
         
         return {
             "success": True,
-            "is_new_user": True,
-            "phone": request.phone
+            "is_new_user": False,
+            "server": server_doc
         }
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error verifying OTP: {e}")
-        raise HTTPException(status_code=400, detail=f"Failed to verify OTP: {str(e)}")
+    
+    return {
+        "success": True,
+        "is_new_user": True,
+        "phone": request.phone
+    }
 
 # Server routes
 @api_router.post("/servers/profile", response_model=Server)

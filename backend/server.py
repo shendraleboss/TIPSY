@@ -10,6 +10,7 @@ from typing import List, Optional, Dict
 import uuid
 from datetime import datetime, timezone
 from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
+from twilio.rest import Client
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -21,6 +22,12 @@ db = client[os.environ['DB_NAME']]
 
 # Stripe setup
 stripe_api_key = os.environ.get('STRIPE_API_KEY')
+
+# Twilio setup
+twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
+twilio_auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
+twilio_verify_service = os.environ.get('TWILIO_VERIFY_SERVICE')
+twilio_client = Client(twilio_account_sid, twilio_auth_token)
 
 # Create the main app without a prefix
 app = FastAPI()

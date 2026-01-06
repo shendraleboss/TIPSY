@@ -27,7 +27,11 @@ stripe_api_key = os.environ.get('STRIPE_API_KEY')
 twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
 twilio_auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
 twilio_verify_service = os.environ.get('TWILIO_VERIFY_SERVICE')
-twilio_client = Client(twilio_account_sid, twilio_auth_token)
+twilio_client = Client(twilio_account_sid, twilio_auth_token) if twilio_account_sid and twilio_auth_token else None
+
+# Development mode
+dev_mode = os.environ.get('DEV_MODE', 'false').lower() == 'true'
+dev_otp_code = os.environ.get('DEV_OTP_CODE', '123456')
 
 # Create the main app without a prefix
 app = FastAPI()

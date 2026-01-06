@@ -78,7 +78,7 @@ class Tip(BaseModel):
     total_paid: float  # Total amount customer paid
     tipsy_fee: float  # 1% fee
     stripe_fee: float  # Stripe processing fee
-    currency: str = "eur"
+    currency: str = "chf"
     session_id: str
     payment_status: str  # pending, paid, failed
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())

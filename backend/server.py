@@ -363,7 +363,7 @@ async def create_tip_checkout(tip_request: TipCheckoutRequest):
             "payment_method_types": ["card"],
             "line_items": [{
                 "price_data": {
-                    "currency": "eur",
+                    "currency": "chf",
                     "product_data": {
                         "name": f"Tip for {server_doc.get('first_name', 'Server')}",
                         "description": "100% goes to the server",

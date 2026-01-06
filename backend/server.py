@@ -54,6 +54,8 @@ class Server(BaseModel):
     phone: str
     first_name: str
     photo_url: Optional[str] = None
+    stripe_account_id: Optional[str] = None
+    stripe_onboarding_complete: bool = False
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 class ServerCreate(BaseModel):

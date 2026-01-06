@@ -24,6 +24,7 @@ const resources = {
       'auth.phone.label': 'Phone Number',
       'auth.phone.placeholder': '+33 6 12 34 56 78',
       'auth.send.otp': 'Send Code',
+      'auth.otp.sent': 'Code sent to your phone!',
       'auth.otp.title': 'Enter verification code',
       'auth.otp.subtitle': 'We sent a code to',
       'auth.otp.label': 'Verification Code',

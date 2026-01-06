@@ -18,6 +18,8 @@ const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [tips, setTips] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [stripeStatus, setStripeStatus] = useState(null);
+  const [connectingStripe, setConnectingStripe] = useState(false);
 
   useEffect(() => {
     const serverData = sessionStorage.getItem('server');

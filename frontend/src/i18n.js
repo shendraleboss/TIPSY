@@ -126,6 +126,14 @@ const resources = {
       'landing.hero.description2': 'Pas de patron. Pas d'intermédiaire. Juste des pourboires équitables qui te reviennent directement.',
       'landing.hero.cta': 'Commencer à gagner',
       'landing.how.title': 'Comment ça marche',
+      
+      // Landing - Tips are
+      'landing.tips.title': 'Un pourboire, c\'est...',
+      'landing.tips.uber': 'un Uber',
+      'landing.tips.drink': 'un verre',
+      'landing.tips.kebab': 'un kebab à 2h du matin',
+      'landing.tips.treat': 'un petit plaisir',
+      'landing.tips.moment': 'un moment à soi',
       'landing.how.step1.title': 'Crée ton profil',
       'landing.how.step1.desc': 'Inscris-toi en moins de 2 minutes',
       'landing.how.step2.title': 'Obtiens ton QR code',

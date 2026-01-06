@@ -71,6 +71,35 @@ const Landing = () => {
               </div>
             </div>
 
+            {/* A tip is... */}
+            <Card className="glass-card p-8 rounded-3xl border border-primary/20">
+              <h3 className="font-quasimoda font-bold text-2xl text-center mb-6 text-primary">
+                {t('landing.tips.title')}
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-foreground/90">
+                  <span className="text-primary text-xl">→</span>
+                  <span className="text-lg">{t('landing.tips.uber')}</span>
+                </div>
+                <div className="flex items-center gap-3 text-foreground/90">
+                  <span className="text-primary text-xl">→</span>
+                  <span className="text-lg">{t('landing.tips.drink')}</span>
+                </div>
+                <div className="flex items-center gap-3 text-foreground/90">
+                  <span className="text-primary text-xl">→</span>
+                  <span className="text-lg">{t('landing.tips.kebab')}</span>
+                </div>
+                <div className="flex items-center gap-3 text-foreground/90">
+                  <span className="text-primary text-xl">→</span>
+                  <span className="text-lg">{t('landing.tips.treat')}</span>
+                </div>
+                <div className="flex items-center gap-3 text-foreground/90">
+                  <span className="text-primary text-xl">→</span>
+                  <span className="text-lg">{t('landing.tips.moment')}</span>
+                </div>
+              </div>
+            </Card>
+
             {/* CTA */}
             <Button
               size="lg"

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Shield, Lock } from 'lucide-react';
 
@@ -22,17 +23,17 @@ export const Footer = () => {
 
         {/* Legal links */}
         <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground mb-4">
-          <a href="#" className="hover:text-primary transition-colors" data-testid="terms-link">
+          <Link to="/terms" className="hover:text-primary transition-colors" data-testid="terms-link">
             {t('footer.terms')}
-          </a>
+          </Link>
           <span>•</span>
-          <a href="#" className="hover:text-primary transition-colors" data-testid="privacy-link">
+          <Link to="/privacy" className="hover:text-primary transition-colors" data-testid="privacy-link">
             {t('footer.privacy')}
-          </a>
+          </Link>
           <span>•</span>
-          <a href="#" className="hover:text-primary transition-colors" data-testid="legal-link">
+          <Link to="/legal" className="hover:text-primary transition-colors" data-testid="legal-link">
             {t('footer.legal')}
-          </a>
+          </Link>
         </div>
 
         {/* Copyright */}

@@ -62,7 +62,7 @@ const TipPage = () => {
   const handleContinue = () => {
     const amount = getFinalAmount();
     if (!amount || amount <= 0) {
-      toast.error('Please select or enter an amount');
+      toast.error(t('error.invalid.amount'));
       return;
     }
 

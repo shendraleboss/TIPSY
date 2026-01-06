@@ -8,7 +8,8 @@ const resources = {
       // Landing
       'landing.hero.title': 'Get Tipsy',
       'landing.hero.subtitle': 'Because you deserve it.',
-      'landing.hero.description': '100% of tips go directly to you. No employer, no middleman. Just fair tips.',
+      'landing.hero.description': 'Your tips. Your money. Direct to your account.',
+      'landing.hero.description2': 'No boss. No middleman. Just fair tips that go straight to you.',
       'landing.hero.cta': 'Start Earning',
       'landing.how.title': 'How it works',
       'landing.how.step1.title': 'Create your profile',

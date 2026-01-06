@@ -244,7 +244,96 @@ async def get_server_stats(server_id: str):
         "average_tip": round(total_tips / tip_count, 2) if tip_count > 0 else 0
     }
 
-# Tip/Payment routes
+# Stripe Connect routes
+@api_router.post("/servers/{server_id}/stripe-connect/onboard")
+async def create_stripe_connect_account(server_id: str, request: Request):
+    import stripe
+    stripe.api_key = stripe_api_key
+    
+    # Get server
+    server_doc = await db.servers.find_one({"id": server_id}, {"_id": 0})
+    if not server_doc:
+        raise HTTPException(status_code=404, detail="Server not found")
+    
+    try:
+        # Create Stripe Connect Express account if doesn't exist
+        if not server_doc.get("stripe_account_id"):
+            account = stripe.Account.create(
+                type="express",
+                country="CH",  # Switzerland
+                email=f"{server_doc['phone']}@tipsy.app",  # Placeholder email
+                capabilities={
+                    "card_payments": {"requested": True},
+                    "transfers": {"requested": True},
+                },
+            )
+            
+            # Update server with Stripe account ID
+            await db.servers.update_one(
+                {"id": server_id},
+                {"$set": {"stripe_account_id": account.id}}
+            )
+            stripe_account_id = account.id
+        else:
+            stripe_account_id = server_doc["stripe_account_id"]
+        
+        # Create account link for onboarding
+        body = await request.json()
+        refresh_url = body.get("refresh_url", f"https://tipsy-pay.preview.emergentagent.com/dashboard")
+        return_url = body.get("return_url", f"https://tipsy-pay.preview.emergentagent.com/dashboard")
+        
+        account_link = stripe.AccountLink.create(
+            account=stripe_account_id,
+            refresh_url=refresh_url,
+            return_url=return_url,
+            type="account_onboarding",
+        )
+        
+        return {
+            "url": account_link.url,
+            "stripe_account_id": stripe_account_id
+        }
+    except Exception as e:
+        logger.error(f"Error creating Stripe Connect account: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/servers/{server_id}/stripe-connect/status")
+async def get_stripe_connect_status(server_id: str):
+    import stripe
+    stripe.api_key = stripe_api_key
+    
+    server_doc = await db.servers.find_one({"id": server_id}, {"_id": 0})
+    if not server_doc:
+        raise HTTPException(status_code=404, detail="Server not found")
+    
+    stripe_account_id = server_doc.get("stripe_account_id")
+    if not stripe_account_id:
+        return {
+            "connected": False,
+            "charges_enabled": False,
+            "details_submitted": False
+        }
+    
+    try:
+        account = stripe.Account.retrieve(stripe_account_id)
+        
+        # Update server onboarding status
+        is_complete = account.charges_enabled and account.details_submitted
+        await db.servers.update_one(
+            {"id": server_id},
+            {"$set": {"stripe_onboarding_complete": is_complete}}
+        )
+        
+        return {
+            "connected": True,
+            "charges_enabled": account.charges_enabled,
+            "details_submitted": account.details_submitted,
+            "payouts_enabled": account.payouts_enabled,
+            "requirements": account.requirements.currently_due if hasattr(account.requirements, 'currently_due') else []
+        }
+    except Exception as e:
+        logger.error(f"Error retrieving Stripe account: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 @api_router.post("/tips/create-checkout")
 async def create_tip_checkout(tip_request: TipCheckoutRequest):
     # Validate server exists

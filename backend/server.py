@@ -101,34 +101,64 @@ class TipCheckoutRequest(BaseModel):
 async def root():
     return {"message": "Tipsy API"}
 
-# Auth routes (mock for now)
+# Auth routes (Twilio Verify)
 @api_router.post("/auth/send-otp")
 async def send_otp(request: SendOTPRequest):
-    # Mock OTP - in production, use Twilio
-    logger.info(f"Mock OTP for {request.phone}: 123456")
-    return {"success": True, "message": "OTP sent (mock: 123456)"}
+    try:
+        verification = twilio_client.verify.services(twilio_verify_service).verifications.create(
+            to=request.phone,
+            channel="sms"
+        )
+        logger.info(f"OTP sent to {request.phone}, status: {verification.status}")
+        return {
+            "success": True,
+            "message": f"OTP sent to {request.phone}",
+            "status": verification.status
+        }
+    except Exception as e:
+        logger.error(f"Error sending OTP: {e}")
+        raise HTTPException(status_code=400, detail=f"Failed to send OTP: {str(e)}")
 
 @api_router.post("/auth/verify-otp")
 async def verify_otp(request: VerifyOTPRequest):
-    # Mock verification - accept any OTP for now
-    if request.otp != "123456":
-        raise HTTPException(status_code=400, detail="Invalid OTP")
-    
-    # Check if server exists
-    server_doc = await db.servers.find_one({"phone": request.phone}, {"_id": 0})
-    
-    if server_doc:
+    try:
+        check = twilio_client.verify.services(twilio_verify_service).verification_checks.create(
+            to=request.phone,
+            code=request.otp
+        )
+        
+        is_valid = check.status == "approved"
+        
+        if not is_valid:
+            raise HTTPException(status_code=400, detail="Invalid OTP")
+        
+        # Check if server exists
+        server_doc = await db.servers.find_one({"phone": request.phone}, {"_id": 0})
+        
+        if server_doc:
+            # Update verification record
+            await db.phone_verifications.update_one(
+                {"phone_number": request.phone, "verified": False},
+                {"$set": {"verified": True, "verified_at": datetime.now(timezone.utc).isoformat()}},
+                upsert=True
+            )
+            
+            return {
+                "success": True,
+                "is_new_user": False,
+                "server": server_doc
+            }
+        
         return {
             "success": True,
-            "is_new_user": False,
-            "server": server_doc
+            "is_new_user": True,
+            "phone": request.phone
         }
-    
-    return {
-        "success": True,
-        "is_new_user": True,
-        "phone": request.phone
-    }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error verifying OTP: {e}")
+        raise HTTPException(status_code=400, detail=f"Failed to verify OTP: {str(e)}")
 
 # Server routes
 @api_router.post("/servers/profile", response_model=Server)

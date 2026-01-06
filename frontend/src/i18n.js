@@ -183,6 +183,30 @@ const resources = {
       'common.loading': 'Chargement...',
       'common.error': 'Une erreur s\'est produite',
       'common.currency': '€',
+      
+      // Footer
+      'footer.terms': 'Conditions d\'utilisation',
+      'footer.privacy': 'Politique de confidentialité',
+      'footer.legal': 'Mentions légales',
+      'footer.rights': 'Tous droits réservés.',
+      
+      // Landing - Trust
+      'landing.trust.direct': 'au serveur',
+      'landing.trust.fee': 'Frais Tipsy',
+      'landing.trust.secure': 'Sécurisé',
+      
+      // Landing - Why
+      'landing.why.title': 'Pourquoi Tipsy ?',
+      'landing.why.transparent': 'Transparence totale sur les frais - aucun coût caché',
+      'landing.why.direct': 'Les pourboires vont directement au serveur, pas à l\'employeur',
+      'landing.why.simple': 'Rapide et simple - donnez un pourboire en moins de 15 secondes',
+      'landing.why.secure': 'Paiements sécurisés par Stripe',
+      
+      // Error messages
+      'error.payment.failed': 'Paiement échoué. Veuillez vérifier vos informations de carte ou essayer un autre moyen de paiement.',
+      'error.network': 'Erreur de connexion. Veuillez vérifier votre connexion Internet et réessayer.',
+      'error.server': 'Erreur serveur. Veuillez réessayer dans un instant.',
+      'error.invalid.amount': 'Veuillez entrer un montant valide supérieur à 0',
     }
   }
 };

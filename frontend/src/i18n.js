@@ -199,14 +199,14 @@ const resources = {
       'landing.why.title': 'Pourquoi Tipsy ?',
       'landing.why.transparent': 'Transparence totale sur les frais - aucun coût caché',
       'landing.why.direct': 'Les pourboires vont directement au serveur, pas à l\'employeur',
-      'landing.why.simple': 'Rapide et simple - donnez un pourboire en moins de 15 secondes',
+      'landing.why.simple': 'Rapide et simple - donne un pourboire en moins de 15 secondes',
       'landing.why.secure': 'Paiements sécurisés par Stripe',
       
       // Error messages
-      'error.payment.failed': 'Paiement échoué. Veuillez vérifier vos informations de carte ou essayer un autre moyen de paiement.',
-      'error.network': 'Erreur de connexion. Veuillez vérifier votre connexion Internet et réessayer.',
-      'error.server': 'Erreur serveur. Veuillez réessayer dans un instant.',
-      'error.invalid.amount': 'Veuillez entrer un montant valide supérieur à 0',
+      'error.payment.failed': 'Paiement échoué. Vérifie tes informations de carte ou essaie un autre moyen de paiement.',
+      'error.network': 'Erreur de connexion. Vérifie ta connexion Internet et réessaie.',
+      'error.server': 'Erreur serveur. Réessaie dans un instant.',
+      'error.invalid.amount': 'Entre un montant valide supérieur à 0',
     }
   }
 };

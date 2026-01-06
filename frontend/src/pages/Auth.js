@@ -106,6 +106,9 @@ const Auth = () => {
                   data-testid="phone-input"
                   required
                 />
+                <p className="text-xs text-muted-foreground mt-2">
+                  Format international requis (+41 pour la Suisse, +33 pour la France, etc.)
+                </p>
               </div>
 
               <Button

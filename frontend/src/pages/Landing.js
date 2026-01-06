@@ -33,7 +33,7 @@ const Landing = () => {
           {/* Hero Image */}
           <div className="relative w-full aspect-video rounded-3xl overflow-hidden border border-white/10">
             <img
-              src="https://images.unsplash.com/photo-1742973480367-2ccf5946a62f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHw0fHx5b3VuZyUyMGZyaWVuZHMlMjB0b2FzdGluZyUyMGRyaW5rcyUyMGJhciUyMG5pZ2h0bGlmZXxlbnwwfHx8fDE3Njc2NjI1MDB8MA&ixlib=rb-4.1.0&q=85"
+              src="https://customer-assets.emergentagent.com/job_tipsy-pay/artifacts/2fnej1fb_IMAGE1.png"
               alt="Tipsy Hero"
               className="w-full h-full object-cover"
             />

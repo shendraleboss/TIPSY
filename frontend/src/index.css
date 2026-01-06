@@ -1,7 +1,7 @@
 /* Quasimoda Font Family */
 @font-face {
   font-family: 'Quasimoda';
-  src: url('/fonts/Quasimoda_HairLine.otf') format('opentype');
+  src: url('../public/fonts/Quasimoda_HairLine.otf') format('opentype');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: 'Quasimoda';
-  src: url('/fonts/Quasimoda_ExtraLightItalic.otf') format('opentype');
+  src: url('../public/fonts/Quasimoda_ExtraLightItalic.otf') format('opentype');
   font-weight: 200;
   font-style: italic;
   font-display: swap;
@@ -17,7 +17,7 @@
 
 @font-face {
   font-family: 'Quasimoda';
-  src: url('/fonts/Quasimoda_ExtraBold.otf') format('opentype');
+  src: url('../public/fonts/Quasimoda_ExtraBold.otf') format('opentype');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -25,7 +25,7 @@
 
 @font-face {
   font-family: 'Quasimoda';
-  src: url('/fonts/Quasimoda_Black.otf') format('opentype');
+  src: url('../public/fonts/Quasimoda_Black.otf') format('opentype');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -33,7 +33,7 @@
 
 @font-face {
   font-family: 'Quasimoda';
-  src: url('/fonts/Quasimoda_BlackItalic.otf') format('opentype');
+  src: url('../public/fonts/Quasimoda_BlackItalic.otf') format('opentype');
   font-weight: 900;
   font-style: italic;
   font-display: swap;

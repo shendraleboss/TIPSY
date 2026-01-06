@@ -83,7 +83,7 @@ const Auth = () => {
         <Card className="glass-card p-8 rounded-3xl space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {/* Header */}
           <div className="text-center space-y-2">
-            <h1 className="font-unbounded font-bold text-3xl">
+            <h1 className="font-quasimoda font-bold text-3xl">
               {step === 'phone' ? t('auth.title') : t('auth.otp.title')}
             </h1>
             <p className="text-muted-foreground">

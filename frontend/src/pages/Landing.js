@@ -25,10 +25,10 @@ const Landing = () => {
           <div className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Logo/Brand */}
             <div className="space-y-4">
-              <h1 className="font-unbounded font-black text-5xl md:text-6xl tracking-tight text-white">
+              <h1 className="font-quasimoda font-black text-5xl md:text-6xl tracking-tight text-white">
                 {t('landing.hero.title')}
               </h1>
-              <p className="font-unbounded font-medium text-xl text-primary tracking-wide">
+              <p className="font-quasimoda font-medium text-xl text-primary tracking-wide">
                 {t('landing.hero.subtitle')}
               </p>
             </div>
@@ -44,19 +44,19 @@ const Landing = () => {
             </div>
 
             {/* Value Prop */}
-            <p className="text-lg text-foreground/90 font-outfit leading-relaxed">
+            <p className="text-lg text-foreground/90 font-quasimoda leading-relaxed">
               {t('landing.hero.description')}
             </p>
 
             {/* Trust indicators */}
             <div className="flex items-center justify-center gap-6 py-4">
               <div className="text-center">
-                <p className="font-unbounded font-bold text-2xl text-primary">100%</p>
+                <p className="font-quasimoda font-bold text-2xl text-primary">100%</p>
                 <p className="text-xs text-muted-foreground">{t('landing.trust.direct')}</p>
               </div>
               <div className="h-8 w-px bg-white/10" />
               <div className="text-center">
-                <p className="font-unbounded font-bold text-2xl text-primary">1%</p>
+                <p className="font-quasimoda font-bold text-2xl text-primary">1%</p>
                 <p className="text-xs text-muted-foreground">{t('landing.trust.fee')}</p>
               </div>
               <div className="h-8 w-px bg-white/10" />
@@ -80,7 +80,7 @@ const Landing = () => {
 
           {/* How it Works */}
           <div className="mt-20 space-y-8">
-            <h2 className="font-unbounded font-bold text-3xl text-center text-white">
+            <h2 className="font-quasimoda font-bold text-3xl text-center text-white">
               {t('landing.how.title')}
             </h2>
 
@@ -91,7 +91,7 @@ const Landing = () => {
                     <Sparkles className="h-6 w-6 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-unbounded font-medium text-lg mb-2 text-white">
+                    <h3 className="font-quasimoda font-medium text-lg mb-2 text-white">
                       {t('landing.how.step1.title')}
                     </h3>
                     <p className="text-muted-foreground">
@@ -107,7 +107,7 @@ const Landing = () => {
                     <QrCode className="h-6 w-6 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-unbounded font-medium text-lg mb-2 text-white">
+                    <h3 className="font-quasimoda font-medium text-lg mb-2 text-white">
                       {t('landing.how.step2.title')}
                     </h3>
                     <p className="text-muted-foreground">
@@ -123,7 +123,7 @@ const Landing = () => {
                     <Wallet className="h-6 w-6 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-unbounded font-medium text-lg mb-2 text-white">
+                    <h3 className="font-quasimoda font-medium text-lg mb-2 text-white">
                       {t('landing.how.step3.title')}
                     </h3>
                     <p className="text-muted-foreground">
@@ -137,7 +137,7 @@ const Landing = () => {
 
           {/* Why Tipsy */}
           <div className="mt-20 space-y-6">
-            <h2 className="font-unbounded font-bold text-2xl text-center text-white">
+            <h2 className="font-quasimoda font-bold text-2xl text-center text-white">
               {t('landing.why.title')}
             </h2>
             <Card className="glass-card p-6 rounded-3xl">

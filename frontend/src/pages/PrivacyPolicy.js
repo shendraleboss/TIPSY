@@ -27,7 +27,7 @@ const PrivacyPolicy = () => {
       <div className="flex-1 max-w-3xl mx-auto px-6 py-20 relative z-10">
         <div className="space-y-8">
           <div className="text-center space-y-4">
-            <h1 className="font-unbounded font-bold text-3xl md:text-4xl text-white">
+            <h1 className="font-quasimoda font-bold text-3xl md:text-4xl text-white">
               Politique de Confidentialité
             </h1>
             <p className="text-muted-foreground">Dernière mise à jour : Janvier 2025</p>
@@ -45,7 +45,7 @@ const PrivacyPolicy = () => {
 
           <Card className="glass-card p-8 rounded-3xl space-y-6">
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">1. Données collectées</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">1. Données collectées</h2>
               <p className="text-foreground/90 leading-relaxed">
                 Tipsy collecte uniquement les données strictement nécessaires au fonctionnement du service :
               </p>
@@ -64,7 +64,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">2. Finalité du traitement</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">2. Finalité du traitement</h2>
               <p className="text-foreground/90 leading-relaxed">Les données sont utilisées pour :</p>
               <ul className="list-disc list-inside space-y-2 text-foreground/90 ml-4">
                 <li>permettre l'accès au service,</li>
@@ -75,7 +75,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">3. Base légale</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">3. Base légale</h2>
               <p className="text-foreground/90 leading-relaxed">Le traitement repose sur :</p>
               <ul className="list-disc list-inside space-y-2 text-foreground/90 ml-4">
                 <li>l'exécution du contrat (utilisation du service),</li>
@@ -85,7 +85,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">4. Partage des données</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">4. Partage des données</h2>
               <p className="text-foreground/90 leading-relaxed">Les données peuvent être partagées uniquement avec :</p>
               <ul className="list-disc list-inside space-y-2 text-foreground/90 ml-4">
                 <li><strong>Stripe</strong> (paiement et vérification d'identité),</li>
@@ -98,7 +98,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">5. Durée de conservation</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">5. Durée de conservation</h2>
               <p className="text-foreground/90 leading-relaxed">Les données sont conservées :</p>
               <ul className="list-disc list-inside space-y-2 text-foreground/90 ml-4">
                 <li>tant que le compte est actif,</li>
@@ -107,7 +107,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">6. Droits des utilisateurs</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">6. Droits des utilisateurs</h2>
               <p className="text-foreground/90 leading-relaxed">
                 Conformément au RGPD, chaque utilisateur dispose des droits suivants :
               </p>
@@ -126,7 +126,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">7. Sécurité</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">7. Sécurité</h2>
               <p className="text-foreground/90 leading-relaxed">
                 Tipsy met en œuvre toutes les mesures techniques et organisationnelles nécessaires pour protéger les données personnelles.
               </p>

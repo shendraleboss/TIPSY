@@ -75,7 +75,7 @@ const QRCodePage = () => {
       <div className="max-w-md mx-auto px-6 py-20 relative z-10">
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="text-center space-y-2">
-            <h1 className="font-unbounded font-bold text-3xl">{t('qr.title')}</h1>
+            <h1 className="font-quasimoda font-bold text-3xl">{t('qr.title')}</h1>
             <p className="text-muted-foreground">{t('qr.subtitle')}</p>
           </div>
 
@@ -119,7 +119,7 @@ const QRCodePage = () => {
                 alt={server.first_name}
                 className="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-2 border-primary"
               />
-              <p className="font-unbounded font-bold text-xl">{server.first_name}</p>
+              <p className="font-quasimoda font-bold text-xl">{server.first_name}</p>
             </Card>
           )}
         </div>

@@ -69,11 +69,11 @@ const TipSuccess = () => {
                 <CheckCircle className="h-16 w-16 text-primary" />
               </div>
               <div className="space-y-2">
-                <h1 className="font-unbounded font-bold text-4xl">{t('success.title')}</h1>
+                <h1 className="font-quasimoda font-bold text-4xl">{t('success.title')}</h1>
                 <p className="text-xl text-muted-foreground">{t('success.subtitle')}</p>
               </div>
               <div className="pt-6 border-t border-white/10">
-                <p className="font-unbounded font-medium text-lg text-secondary">
+                <p className="font-quasimoda font-medium text-lg text-secondary">
                   {t('success.slogan')}
                 </p>
               </div>

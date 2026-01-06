@@ -27,7 +27,7 @@ const TermsOfService = () => {
       <div className="flex-1 max-w-3xl mx-auto px-6 py-20 relative z-10">
         <div className="space-y-8">
           <div className="text-center space-y-4">
-            <h1 className="font-unbounded font-bold text-3xl md:text-4xl text-white">
+            <h1 className="font-quasimoda font-bold text-3xl md:text-4xl text-white">
               Conditions Générales d'Utilisation
             </h1>
             <p className="text-muted-foreground">Dernière mise à jour : Janvier 2025</p>
@@ -35,14 +35,14 @@ const TermsOfService = () => {
 
           <Card className="glass-card p-8 rounded-3xl space-y-6">
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">1. Objet</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">1. Objet</h2>
               <p className="text-foreground/90 leading-relaxed">
                 Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités d'utilisation de l'application Tipsy, permettant aux utilisateurs de recevoir et d'envoyer des pourboires numériques.
               </p>
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">2. Description du service</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">2. Description du service</h2>
               <p className="text-foreground/90 leading-relaxed">Tipsy permet :</p>
               <ul className="list-disc list-inside space-y-2 text-foreground/90 ml-4">
                 <li>aux serveurs / utilisateurs bénéficiaires de recevoir des pourboires numériques directement sur leur compte,</li>
@@ -54,7 +54,7 @@ const TermsOfService = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">3. Accès au service</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">3. Accès au service</h2>
               <p className="text-foreground/90 leading-relaxed">L'accès à certaines fonctionnalités (réception de pourboires) nécessite :</p>
               <ul className="list-disc list-inside space-y-2 text-foreground/90 ml-4">
                 <li>une inscription via numéro de téléphone,</li>
@@ -66,7 +66,7 @@ const TermsOfService = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">4. Conditions financières</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">4. Conditions financières</h2>
               <ul className="list-disc list-inside space-y-2 text-foreground/90 ml-4">
                 <li>Le bénéficiaire reçoit <strong className="text-primary">100 % du montant du pourboire</strong> choisi par le client.</li>
                 <li>Tipsy prélève <strong className="text-primary">1 %</strong>, payé par le client.</li>
@@ -76,7 +76,7 @@ const TermsOfService = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">5. Responsabilité</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">5. Responsabilité</h2>
               <p className="text-foreground/90 leading-relaxed">Tipsy ne saurait être tenu responsable :</p>
               <ul className="list-disc list-inside space-y-2 text-foreground/90 ml-4">
                 <li>des litiges entre utilisateurs,</li>
@@ -86,21 +86,21 @@ const TermsOfService = () => {
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">6. Comportement des utilisateurs</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">6. Comportement des utilisateurs</h2>
               <p className="text-foreground/90 leading-relaxed">
                 Tout usage frauduleux, abusif ou contraire à la loi entraînera la suspension ou la suppression du compte concerné.
               </p>
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">7. Modification du service</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">7. Modification du service</h2>
               <p className="text-foreground/90 leading-relaxed">
                 Tipsy se réserve le droit de faire évoluer le service, ses fonctionnalités ou ses conditions à tout moment.
               </p>
             </section>
 
             <section className="space-y-3">
-              <h2 className="font-unbounded font-bold text-xl text-white">8. Droit applicable</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-white">8. Droit applicable</h2>
               <p className="text-foreground/90 leading-relaxed">
                 Les présentes CGU sont soumises au droit suisse.
               </p>

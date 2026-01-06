@@ -53,7 +53,7 @@ const ProfileSetup = () => {
       <div className="max-w-md w-full relative z-10">
         <Card className="glass-card p-8 rounded-3xl space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="text-center space-y-2">
-            <h1 className="font-unbounded font-bold text-3xl">{t('profile.setup.title')}</h1>
+            <h1 className="font-quasimoda font-bold text-3xl">{t('profile.setup.title')}</h1>
             <p className="text-muted-foreground">{t('profile.setup.subtitle')}</p>
           </div>
 

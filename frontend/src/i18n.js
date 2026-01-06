@@ -90,7 +90,7 @@ const resources = {
       'common.back': 'Back',
       'common.loading': 'Loading...',
       'common.error': 'An error occurred',
-      'common.currency': '€',
+      'common.currency': 'CHF',
       
       // Footer
       'footer.terms': 'Terms of Service',

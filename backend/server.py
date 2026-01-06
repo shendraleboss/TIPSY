@@ -352,7 +352,6 @@ async def create_tip_checkout(tip_request: TipCheckoutRequest):
     
     # Convert to cents for Stripe
     amount_in_cents = int(total_to_charge * 100)
-    tip_amount_cents = int(tip_amount * 100)
     tipsy_fee_cents = int(tipsy_fee * 100)
     
     try:

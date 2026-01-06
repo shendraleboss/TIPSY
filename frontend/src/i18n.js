@@ -80,6 +80,30 @@ const resources = {
       'common.loading': 'Loading...',
       'common.error': 'An error occurred',
       'common.currency': '€',
+      
+      // Footer
+      'footer.terms': 'Terms of Service',
+      'footer.privacy': 'Privacy Policy',
+      'footer.legal': 'Legal Notice',
+      'footer.rights': 'All rights reserved.',
+      
+      // Landing - Trust
+      'landing.trust.direct': 'to server',
+      'landing.trust.fee': 'Tipsy fee',
+      'landing.trust.secure': 'Secure',
+      
+      // Landing - Why
+      'landing.why.title': 'Why Tipsy?',
+      'landing.why.transparent': 'Total transparency on fees - no hidden costs',
+      'landing.why.direct': 'Tips go directly to the server, not the employer',
+      'landing.why.simple': 'Fast and simple - tip in under 15 seconds',
+      'landing.why.secure': 'Secure payments powered by Stripe',
+      
+      // Error messages
+      'error.payment.failed': 'Payment failed. Please check your card details or try another payment method.',
+      'error.network': 'Connection error. Please check your internet connection and try again.',
+      'error.server': 'Server error. Please try again in a moment.',
+      'error.invalid.amount': 'Please enter a valid amount greater than 0',
     }
   },
   fr: {

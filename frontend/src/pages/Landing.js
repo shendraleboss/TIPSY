@@ -44,9 +44,14 @@ const Landing = () => {
             </div>
 
             {/* Value Prop */}
-            <p className="text-lg text-foreground/90 font-quasimoda leading-relaxed">
-              {t('landing.hero.description')}
-            </p>
+            <div className="space-y-4">
+              <p className="text-xl font-bold text-white leading-relaxed">
+                {t('landing.hero.description')}
+              </p>
+              <p className="text-base text-foreground/80 leading-relaxed">
+                {t('landing.hero.description2')}
+              </p>
+            </div>
 
             {/* Trust indicators */}
             <div className="flex items-center justify-center gap-6 py-4">

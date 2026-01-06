@@ -144,6 +144,48 @@ const Dashboard = () => {
               {t('dashboard.my.qr')}
             </Button>
 
+            {/* Stripe Connect */}
+            {stripeStatus && !stripeStatus.charges_enabled && (
+              <Card className="glass-card p-6 rounded-3xl border-2 border-primary/30">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary/20 p-3 rounded-xl">
+                      <LinkIcon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-unbounded font-bold text-white">
+                        Connecte ton compte Stripe
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Reçois tes pourboires directement sur ton compte
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    className="w-full rounded-full py-4"
+                    onClick={handleConnectStripe}
+                    disabled={connectingStripe}
+                    data-testid="connect-stripe-button"
+                  >
+                    {connectingStripe ? 'Connexion...' : 'Connecter Stripe'}
+                  </Button>
+                </div>
+              </Card>
+            )}
+
+            {stripeStatus && stripeStatus.charges_enabled && (
+              <Card className="glass-card p-4 rounded-2xl border border-primary/30">
+                <div className="flex items-center gap-3">
+                  <div className="bg-primary/20 p-2 rounded-lg">
+                    <LinkIcon className="h-4 w-4 text-primary" />
+                  </div>
+                  <p className="text-sm text-primary font-medium">
+                    ✓ Compte Stripe connecté
+                  </p>
+                </div>
+              </Card>
+            )}
+
             {/* Recent Tips */}
             <div className="space-y-4">
               <h2 className="font-unbounded font-bold text-xl text-white">{t('dashboard.recent.tips')}</h2>

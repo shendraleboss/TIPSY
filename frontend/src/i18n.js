@@ -141,18 +141,18 @@ const resources = {
       'profile.save': 'Enregistrer le profil',
       
       // Dashboard
-      'dashboard.title': 'Votre tableau de bord',
+      'dashboard.title': 'Ton tableau de bord',
       'dashboard.total.tips': 'Pourboires totaux',
       'dashboard.tip.count': 'Pourboires reçus',
       'dashboard.average.tip': 'Pourboire moyen',
       'dashboard.recent.tips': 'Pourboires récents',
-      'dashboard.no.tips': 'Aucun pourboire pour le moment. Partagez votre QR code pour commencer à gagner!',
+      'dashboard.no.tips': 'Aucun pourboire pour le moment. Partage ton QR code pour commencer à gagner!',
       'dashboard.my.qr': 'Mon QR Code',
       'dashboard.logout': 'Déconnexion',
       
       // QR Code
-      'qr.title': 'Votre QR Code',
-      'qr.subtitle': 'Partagez-le avec les clients pour recevoir des pourboires',
+      'qr.title': 'Ton QR Code',
+      'qr.subtitle': 'Partage-le avec les clients pour recevoir des pourboires',
       'qr.download': 'Télécharger le QR',
       'qr.share': 'Partager le lien',
       'qr.link.copied': 'Lien copié!',

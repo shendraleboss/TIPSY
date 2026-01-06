@@ -5,7 +5,7 @@ import axios from 'axios';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { QrCode, LogOut, Sparkles } from 'lucide-react';
+import { QrCode, LogOut, Sparkles, Link as LinkIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;

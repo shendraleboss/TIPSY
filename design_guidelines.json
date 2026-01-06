@@ -1,0 +1,147 @@
+{
+  "identity": {
+    "name": "Tipsy",
+    "mission": "100% tips to servers. Transparent, fair, and cool.",
+    "vibe": "Nightlife, Gen-Z, Neon Noir, Trustworthy, Fun",
+    "audience": "Servers (18-35), Nightlife Customers",
+    "principles": [
+      "Server First: They are the heroes.",
+      "Transparency: No hidden fees.",
+      "Vibe Check: It must feel like a night out, not a bank app.",
+      "Speed: Tipping should be faster than ordering a drink."
+    ]
+  },
+  "typography": {
+    "primary_font": "Unbounded",
+    "secondary_font": "Outfit",
+    "font_weights": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "bold": 700,
+      "black": 900
+    },
+    "usage": {
+      "headings": "font-unbounded font-bold tracking-tight",
+      "subheadings": "font-unbounded font-medium tracking-wide uppercase",
+      "body": "font-outfit font-regular leading-relaxed",
+      "ui_elements": "font-outfit font-medium tracking-wide"
+    },
+    "scale": {
+      "h1": "text-4xl md:text-6xl",
+      "h2": "text-3xl md:text-5xl",
+      "h3": "text-2xl md:text-3xl",
+      "body": "text-base md:text-lg",
+      "caption": "text-sm text-muted-foreground"
+    }
+  },
+  "colors": {
+    "palette": {
+      "background": "#05050A",
+      "foreground": "#FAFAFA",
+      "card": "#0F0F16",
+      "card_foreground": "#FAFAFA",
+      "popover": "#0F0F16",
+      "popover_foreground": "#FAFAFA",
+      "primary": "#7C3AED",
+      "primary_foreground": "#FFFFFF",
+      "secondary": "#2DD4BF",
+      "secondary_foreground": "#000000",
+      "muted": "#18181B",
+      "muted_foreground": "#A1A1AA",
+      "accent": "#DB2777",
+      "accent_foreground": "#FFFFFF",
+      "destructive": "#EF4444",
+      "destructive_foreground": "#FFFFFF",
+      "border": "#27272A",
+      "input": "#27272A",
+      "ring": "#7C3AED"
+    },
+    "gradients": {
+      "brand_glow": "bg-gradient-to-r from-violet-600 to-fuchsia-600",
+      "glass_surface": "bg-white/5 backdrop-blur-xl border-white/10"
+    },
+    "semantic": {
+      "success": "text-teal-400",
+      "error": "text-red-500",
+      "warning": "text-yellow-500",
+      "info": "text-blue-400"
+    }
+  },
+  "visual_enhancers": {
+    "radius": "1rem",
+    "shadows": {
+      "glow": "0 0 20px rgba(124, 58, 237, 0.5)",
+      "glass": "0 8px 32px 0 rgba(0, 0, 0, 0.37)"
+    },
+    "borders": {
+      "glass": "1px solid rgba(255, 255, 255, 0.1)",
+      "neon": "1px solid rgba(124, 58, 237, 0.5)"
+    },
+    "textures": "Use subtle noise overlay on the background to prevent banding and add grit."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(124,58,237,0.3)] rounded-full px-8 py-6 text-lg font-bold transition-all hover:scale-105 active:scale-95",
+      "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-full px-6 py-4 font-medium",
+      "ghost": "hover:bg-white/10 text-foreground rounded-full px-4 py-2",
+      "outline": "border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-full px-6 py-4"
+    },
+    "cards": {
+      "default": "bg-card/50 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-xl",
+      "interactive": "hover:border-primary/50 transition-colors cursor-pointer"
+    },
+    "inputs": {
+      "default": "bg-white/5 border-white/10 focus:border-primary focus:ring-primary rounded-xl h-14 text-lg px-4 placeholder:text-muted-foreground/50"
+    }
+  },
+  "layout": {
+    "grid_system": "Mobile-first. Use 'grid-cols-1' by default. For dashboard, use 'grid-cols-2' for stats.",
+    "spacing": {
+      "container_padding": "p-6 md:p-12",
+      "section_gap": "gap-8 md:gap-16",
+      "element_gap": "gap-4"
+    },
+    "containers": {
+      "main": "max-w-md mx-auto min-h-screen flex flex-col relative overflow-hidden"
+    }
+  },
+  "motion": {
+    "transitions": "transition-all duration-300 ease-out",
+    "animations": {
+      "fade_in": "animate-in fade-in duration-500",
+      "slide_up": "animate-in slide-in-from-bottom-4 duration-500",
+      "pulse_glow": "animate-pulse"
+    }
+  },
+  "media": {
+    "image_urls": {
+      "hero_toasting": "https://images.unsplash.com/photo-1742973480367-2ccf5946a62f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHw0fHx5b3VuZyUyMGZyaWVuZHMlMjB0b2FzdGluZyUyMGRyaW5rcyUyMGJhciUyMG5pZ2h0bGlmZXxlbnwwfHx8fDE3Njc2NjI1MDB8MA&ixlib=rb-4.1.0&q=85",
+      "bartender_profile": "https://images.unsplash.com/photo-1722537049087-88b6a257dd32?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGJhcnRlbmRlciUyMHNlcnZpbmclMjBkcmlua3MlMjBuaWdodCUyMG5lb258ZW58MHx8fHwxNzY3NjYyNDk5fDA&ixlib=rb-4.1.0&q=85",
+      "social_vibe": "https://images.unsplash.com/photo-1721924993432-3fe0960bca4f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwyfHxoYXBweSUyMGJhcnRlbmRlciUyMHNlcnZpbmclMjBkcmlua3MlMjBuaWdodCUyMG5lb258ZW58MHx8fHwxNzY3NjYyNDk5fDA&ixlib=rb-4.1.0&q=85"
+    },
+    "icons": "Use 'lucide-react' for UI icons. Use 'phosphor-icons' (Duotone) for feature highlights if needed."
+  },
+  "accessibility": {
+    "contrast": "Ensure text is legible on dark backgrounds. Use 'text-white' or 'text-gray-200' for body.",
+    "touch_targets": "Minimum 44px for all interactive elements.",
+    "focus_states": "Visible focus rings with 'ring-2 ring-primary' on keyboard navigation."
+  },
+  "instructions_to_main_agent": [
+    "1. INSTALL FONTS: Add '@fontsource/unbounded' and '@fontsource/outfit' to package.json immediately.",
+    "2. CONFIGURE TAILWIND: Update 'tailwind.config.js' with the colors and fonts defined in this JSON.",
+    "3. OVERRIDE CSS: Update 'index.css' to set the root variables to the dark theme values provided.",
+    "4. MOBILE FIRST: Build everything assuming a mobile viewport (max-w-md mx-auto) first, then scale up.",
+    "5. GLASSMORPHISM: Use the glass card style for the 'Tip Amount' selection and 'Payment Breakdown'.",
+    "6. NO CORPORATE VIBES: Avoid standard tables. Use card lists for history.",
+    "7. ANIMATE: Add subtle entrance animations to the dashboard cards."
+  ],
+  "universal_guidelines": [
+    "Do not use gradients for text unless it's a very large headline.",
+    "Avoid 'Inter' font. Use the specified brand fonts.",
+    "Use 'sonner' for toasts.",
+    "All interactive elements must have 'data-testid'.",
+    "Do not use generic AI emojis.",
+    "Use 2-3x more spacing than typical designs."
+  ]
+}

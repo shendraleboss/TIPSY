@@ -65,7 +65,7 @@ const Dashboard = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-unbounded font-bold text-2xl">{t('dashboard.title')}</h1>
+            <h1 className="font-unbounded font-bold text-2xl text-white">{t('dashboard.title')}</h1>
             <p className="text-muted-foreground">Hey, {server.first_name}!</p>
           </div>
           <Button
@@ -98,7 +98,7 @@ const Dashboard = () => {
               <Card className="glass-card p-6 rounded-3xl" data-testid="tip-count-card">
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">{t('dashboard.tip.count')}</p>
-                  <p className="font-unbounded font-bold text-3xl text-secondary">
+                  <p className="font-unbounded font-bold text-3xl text-white">
                     {stats?.tip_count || 0}
                   </p>
                 </div>
@@ -108,7 +108,7 @@ const Dashboard = () => {
             <Card className="glass-card p-6 rounded-3xl" data-testid="average-tip-card">
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground">{t('dashboard.average.tip')}</p>
-                <p className="font-unbounded font-bold text-2xl">
+                <p className="font-unbounded font-bold text-2xl text-white">
                   {stats?.average_tip || 0}{t('common.currency')}
                 </p>
               </div>
@@ -116,7 +116,7 @@ const Dashboard = () => {
 
             {/* QR Code Button */}
             <Button
-              className="w-full rounded-full py-6 text-lg font-bold"
+              className="w-full rounded-full py-6 text-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground transition-all"
               onClick={() => navigate('/qr-code')}
               data-testid="my-qr-button"
             >
@@ -126,7 +126,7 @@ const Dashboard = () => {
 
             {/* Recent Tips */}
             <div className="space-y-4">
-              <h2 className="font-unbounded font-bold text-xl">{t('dashboard.recent.tips')}</h2>
+              <h2 className="font-unbounded font-bold text-xl text-white">{t('dashboard.recent.tips')}</h2>
 
               {tips.length === 0 ? (
                 <Card className="glass-card p-6 rounded-3xl text-center" data-testid="no-tips-message">
@@ -139,7 +139,7 @@ const Dashboard = () => {
                     <Card key={tip.id || index} className="glass-card p-4 rounded-2xl" data-testid={`tip-item-${index}`}>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-unbounded font-bold text-lg">
+                          <p className="font-unbounded font-bold text-lg text-white">
                             {tip.amount}{t('common.currency')}
                           </p>
                           <p className="text-sm text-muted-foreground">

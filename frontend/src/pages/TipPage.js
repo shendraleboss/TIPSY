@@ -6,7 +6,7 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { Sparkles, ArrowRight } from 'lucide-react';
+import { Sparkles, ArrowRight, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -135,7 +135,7 @@ const TipPage = () => {
                 />
               )}
               <div>
-                <h1 className="font-unbounded font-bold text-3xl">
+                <h1 className="font-unbounded font-bold text-3xl text-white">
                   {t('tip.title')} {server.first_name}
                 </h1>
                 <p className="text-muted-foreground mt-2">{t('tip.select.amount')}</p>
@@ -151,11 +151,11 @@ const TipPage = () => {
                   className={`glass-card p-6 rounded-3xl transition-all hover:scale-105 active:scale-95 ${
                     selectedAmount === amount
                       ? 'border-2 border-primary bg-primary/10'
-                      : 'border border-white/10 hover:border-primary/50'
+                      : 'border border-white/10 hover:border-primary/30'
                   }`}
                   data-testid={`preset-amount-${amount}`}
                 >
-                  <p className="font-unbounded font-bold text-3xl">
+                  <p className="font-unbounded font-bold text-3xl text-white">
                     {amount}{t('common.currency')}
                   </p>
                 </button>
@@ -178,7 +178,7 @@ const TipPage = () => {
 
             {/* Continue Button */}
             <Button
-              className="w-full rounded-full py-6 text-lg font-bold"
+              className="w-full rounded-full py-6 text-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground transition-all"
               onClick={handleContinue}
               disabled={!getFinalAmount()}
               data-testid="continue-to-payment-button"
@@ -191,13 +191,13 @@ const TipPage = () => {
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Payment Breakdown */}
             <div className="text-center space-y-2">
-              <h1 className="font-unbounded font-bold text-2xl">{t('tip.breakdown.title')}</h1>
+              <h1 className="font-unbounded font-bold text-2xl text-white">{t('tip.breakdown.title')}</h1>
             </div>
 
             <Card className="glass-card p-6 rounded-3xl space-y-4" data-testid="payment-breakdown">
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">{t('tip.breakdown.tip')}</span>
-                <span className="font-unbounded font-bold text-lg">
+                <span className="font-unbounded font-bold text-lg text-white">
                   {breakdown.tip.toFixed(2)}{t('common.currency')}
                 </span>
               </div>
@@ -218,13 +218,13 @@ const TipPage = () => {
 
               <div className="border-t border-white/10 pt-4 mt-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="font-unbounded font-bold text-lg">{t('tip.breakdown.total')}</span>
+                  <span className="font-unbounded font-bold text-lg text-white">{t('tip.breakdown.total')}</span>
                   <span className="font-unbounded font-bold text-2xl text-primary">
                     {breakdown.total.toFixed(2)}{t('common.currency')}
                   </span>
                 </div>
-                <p className="text-sm text-secondary text-center">
-                  <Sparkles className="inline h-4 w-4 mr-1" />
+                <p className="text-sm text-primary/80 text-center flex items-center justify-center gap-1">
+                  <Heart className="inline h-4 w-4" />
                   {t('tip.breakdown.server.receives')} ({breakdown.tip.toFixed(2)}{t('common.currency')})
                 </p>
               </div>
@@ -236,7 +236,7 @@ const TipPage = () => {
 
             <div className="space-y-3">
               <Button
-                className="w-full rounded-full py-6 text-lg font-bold"
+                className="w-full rounded-full py-6 text-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground transition-all"
                 onClick={handlePayNow}
                 disabled={processingPayment}
                 data-testid="pay-now-button"

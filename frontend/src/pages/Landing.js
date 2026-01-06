@@ -22,12 +22,10 @@ const Landing = () => {
         <div className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
           {/* Logo/Brand */}
           <div className="space-y-4">
-            <h1 className="font-unbounded font-black text-5xl md:text-6xl tracking-tight">
-              <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                {t('landing.hero.title')}
-              </span>
+            <h1 className="font-unbounded font-black text-5xl md:text-6xl tracking-tight text-white">
+              {t('landing.hero.title')}
             </h1>
-            <p className="font-unbounded font-medium text-xl text-muted-foreground tracking-wide">
+            <p className="font-unbounded font-medium text-xl text-primary tracking-wide">
               {t('landing.hero.subtitle')}
             </p>
           </div>
@@ -43,14 +41,14 @@ const Landing = () => {
           </div>
 
           {/* Value Prop */}
-          <p className="text-lg text-foreground/80 font-outfit leading-relaxed">
+          <p className="text-lg text-foreground/90 font-outfit leading-relaxed">
             {t('landing.hero.description')}
           </p>
 
           {/* CTA */}
           <Button
             size="lg"
-            className="w-full rounded-full py-7 text-lg font-bold shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:shadow-[0_0_30px_rgba(124,58,237,0.5)] transition-all hover:scale-105 active:scale-95"
+            className="w-full rounded-full py-7 text-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground transition-all hover:scale-105 active:scale-95"
             onClick={() => navigate('/auth')}
             data-testid="landing-cta-button"
           >
@@ -61,18 +59,18 @@ const Landing = () => {
 
         {/* How it Works */}
         <div className="mt-20 space-y-8">
-          <h2 className="font-unbounded font-bold text-3xl text-center">
+          <h2 className="font-unbounded font-bold text-3xl text-center text-white">
             {t('landing.how.title')}
           </h2>
 
           <div className="space-y-4">
-            <Card className="glass-card p-6 rounded-3xl hover:border-primary/50 transition-all" data-testid="how-it-works-step-1">
+            <Card className="glass-card p-6 rounded-3xl hover:border-primary/30 transition-all" data-testid="how-it-works-step-1">
               <div className="flex items-start gap-4">
                 <div className="bg-primary/20 p-3 rounded-2xl">
                   <Sparkles className="h-6 w-6 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-unbounded font-medium text-lg mb-2">
+                  <h3 className="font-unbounded font-medium text-lg mb-2 text-white">
                     {t('landing.how.step1.title')}
                   </h3>
                   <p className="text-muted-foreground">
@@ -82,13 +80,13 @@ const Landing = () => {
               </div>
             </Card>
 
-            <Card className="glass-card p-6 rounded-3xl hover:border-primary/50 transition-all" data-testid="how-it-works-step-2">
+            <Card className="glass-card p-6 rounded-3xl hover:border-primary/30 transition-all" data-testid="how-it-works-step-2">
               <div className="flex items-start gap-4">
-                <div className="bg-secondary/20 p-3 rounded-2xl">
-                  <QrCode className="h-6 w-6 text-secondary" />
+                <div className="bg-primary/20 p-3 rounded-2xl">
+                  <QrCode className="h-6 w-6 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-unbounded font-medium text-lg mb-2">
+                  <h3 className="font-unbounded font-medium text-lg mb-2 text-white">
                     {t('landing.how.step2.title')}
                   </h3>
                   <p className="text-muted-foreground">
@@ -98,13 +96,13 @@ const Landing = () => {
               </div>
             </Card>
 
-            <Card className="glass-card p-6 rounded-3xl hover:border-primary/50 transition-all" data-testid="how-it-works-step-3">
+            <Card className="glass-card p-6 rounded-3xl hover:border-primary/30 transition-all" data-testid="how-it-works-step-3">
               <div className="flex items-start gap-4">
-                <div className="bg-accent/20 p-3 rounded-2xl">
-                  <Wallet className="h-6 w-6 text-accent" />
+                <div className="bg-primary/20 p-3 rounded-2xl">
+                  <Wallet className="h-6 w-6 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-unbounded font-medium text-lg mb-2">
+                  <h3 className="font-unbounded font-medium text-lg mb-2 text-white">
                     {t('landing.how.step3.title')}
                   </h3>
                   <p className="text-muted-foreground">

@@ -107,7 +107,7 @@ const Auth = () => {
                   required
                 />
                 <p className="text-xs text-muted-foreground mt-2">
-                  Format international requis (+41 pour la Suisse, +33 pour la France, etc.)
+                  {t('auth.phone.help')}
                 </p>
               </div>
 

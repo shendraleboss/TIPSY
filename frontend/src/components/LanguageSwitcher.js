@@ -5,10 +5,13 @@ import { Button } from '@/components/ui/button';
 
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
+  
+  // Get current language properly, accounting for language codes like 'en-US'
+  const currentLang = i18n.language?.split('-')[0] || 'en';
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'en' ? 'fr' : 'en';
-    i18n.changeLanguage(newLang);
+  const toggleLanguage = async () => {
+    const newLang = currentLang === 'en' ? 'fr' : 'en';
+    await i18n.changeLanguage(newLang);
   };
 
   return (
@@ -20,7 +23,7 @@ export const LanguageSwitcher = () => {
       data-testid="language-switcher"
     >
       <Globe className="h-4 w-4 mr-2" />
-      {i18n.language === 'en' ? 'FR' : 'EN'}
+      {currentLang === 'en' ? 'FR' : 'EN'}
     </Button>
   );
 };

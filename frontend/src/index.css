@@ -1,9 +1,17 @@
-/* Quasimoda Font Family */
+/* Quasimoda Font Family - Complete Weight Range */
 @font-face {
   font-family: 'Quasimoda';
   src: url('../public/fonts/Quasimoda_HairLine.otf') format('opentype');
   font-weight: 100;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quasimoda';
+  src: url('../public/fonts/Quasimoda_HairLineItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -17,8 +25,40 @@
 
 @font-face {
   font-family: 'Quasimoda';
+  src: url('../public/fonts/Quasimoda_Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quasimoda';
+  src: url('../public/fonts/Quasimoda_MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quasimoda';
+  src: url('../public/fonts/Quasimoda_SemiBoldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quasimoda';
   src: url('../public/fonts/Quasimoda_ExtraBold.otf') format('opentype');
   font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quasimoda';
+  src: url('../public/fonts/Quasimoda_Heavy.otf') format('opentype');
+  font-weight: 850;
   font-style: normal;
   font-display: swap;
 }
@@ -46,7 +86,7 @@
 body {
     margin: 0;
     font-family: 'Quasimoda', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 800;
+    font-weight: 500;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

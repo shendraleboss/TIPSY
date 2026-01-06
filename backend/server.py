@@ -336,6 +336,9 @@ async def get_stripe_connect_status(server_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 @api_router.post("/tips/create-checkout")
 async def create_tip_checkout(tip_request: TipCheckoutRequest):
+    import stripe
+    stripe.api_key = stripe_api_key
+    
     # Validate server exists
     server_doc = await db.servers.find_one({"id": tip_request.server_id}, {"_id": 0})
     if not server_doc:
@@ -347,56 +350,83 @@ async def create_tip_checkout(tip_request: TipCheckoutRequest):
     stripe_fee = round(tip_amount * 0.029 + 0.30, 2)  # Stripe: 2.9% + €0.30
     total_to_charge = round(tip_amount + tipsy_fee + stripe_fee, 2)
     
-    # Initialize Stripe
-    webhook_url = f"{tip_request.host_url}/api/webhook/stripe"
-    stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
+    # Convert to cents for Stripe
+    amount_in_cents = int(total_to_charge * 100)
+    tip_amount_cents = int(tip_amount * 100)
+    tipsy_fee_cents = int(tipsy_fee * 100)
     
-    # Create checkout session
-    success_url = f"{tip_request.host_url}/tip-success?session_id={{{{CHECKOUT_SESSION_ID}}}}"
-    cancel_url = f"{tip_request.host_url}/t/{tip_request.server_id}"
-    
-    checkout_request = CheckoutSessionRequest(
-        amount=total_to_charge,
-        currency="eur",
-        success_url=success_url,
-        cancel_url=cancel_url,
-        metadata={
-            "server_id": tip_request.server_id,
-            "tip_amount": str(tip_amount),
-            "tipsy_fee": str(tipsy_fee),
-            "stripe_fee": str(stripe_fee),
-            "type": "tip"
+    try:
+        # Create checkout session with Stripe Connect
+        success_url = f"{tip_request.host_url}/tip-success?session_id={{CHECKOUT_SESSION_ID}}"
+        cancel_url = f"{tip_request.host_url}/t/{tip_request.server_id}"
+        
+        session_params = {
+            "payment_method_types": ["card"],
+            "line_items": [{
+                "price_data": {
+                    "currency": "eur",
+                    "product_data": {
+                        "name": f"Tip for {server_doc.get('first_name', 'Server')}",
+                        "description": "100% goes to the server",
+                    },
+                    "unit_amount": amount_in_cents,
+                },
+                "quantity": 1,
+            }],
+            "mode": "payment",
+            "success_url": success_url,
+            "cancel_url": cancel_url,
+            "metadata": {
+                "server_id": tip_request.server_id,
+                "tip_amount": str(tip_amount),
+                "tipsy_fee": str(tipsy_fee),
+                "stripe_fee": str(stripe_fee),
+                "type": "tip"
+            }
         }
-    )
-    
-    session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
-    
-    # Create payment transaction record
-    transaction = PaymentTransaction(
-        session_id=session.session_id,
-        server_id=tip_request.server_id,
-        amount=total_to_charge,
-        currency="eur",
-        payment_status="pending",
-        status="pending",
-        metadata={
-            "tip_amount": tip_amount,
-            "tipsy_fee": tipsy_fee,
-            "stripe_fee": stripe_fee
+        
+        # If server has Stripe Connect account, use it
+        stripe_account_id = server_doc.get("stripe_account_id")
+        if stripe_account_id and server_doc.get("stripe_onboarding_complete"):
+            session_params["payment_intent_data"] = {
+                "application_fee_amount": tipsy_fee_cents,
+                "transfer_data": {
+                    "destination": stripe_account_id,
+                },
+            }
+        
+        session = stripe.checkout.Session.create(**session_params)
+        
+        # Create payment transaction record
+        transaction = PaymentTransaction(
+            session_id=session.id,
+            server_id=tip_request.server_id,
+            amount=total_to_charge,
+            currency="eur",
+            payment_status="pending",
+            status="pending",
+            metadata={
+                "tip_amount": tip_amount,
+                "tipsy_fee": tipsy_fee,
+                "stripe_fee": stripe_fee,
+                "stripe_account_id": stripe_account_id if stripe_account_id else None
+            }
+        )
+        await db.payment_transactions.insert_one(transaction.model_dump())
+        
+        return {
+            "url": session.url,
+            "session_id": session.id,
+            "breakdown": {
+                "tip": tip_amount,
+                "tipsy_fee": tipsy_fee,
+                "stripe_fee": stripe_fee,
+                "total": total_to_charge
+            }
         }
-    )
-    await db.payment_transactions.insert_one(transaction.model_dump())
-    
-    return {
-        "url": session.url,
-        "session_id": session.session_id,
-        "breakdown": {
-            "tip": tip_amount,
-            "tipsy_fee": tipsy_fee,
-            "stripe_fee": stripe_fee,
-            "total": total_to_charge
-        }
-    }
+    except Exception as e:
+        logger.error(f"Error creating checkout session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.get("/tips/checkout-status/{session_id}")
 async def get_checkout_status(session_id: str):

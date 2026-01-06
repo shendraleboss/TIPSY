@@ -123,7 +123,7 @@ const resources = {
       'landing.hero.title': 'Get Tipsy',
       'landing.hero.subtitle': 'Parce que tu le mérites.',
       'landing.hero.description': 'Tes pourboires. Ton argent. Direct sur ton compte.',
-      'landing.hero.description2': 'Pas de patron. Pas d'intermédiaire. Juste des pourboires équitables qui te reviennent directement.',
+      'landing.hero.description2': 'Pas de patron. Pas d\'intermédiaire. Juste des pourboires équitables qui te reviennent directement.',
       'landing.hero.cta': 'Commencer à gagner',
       'landing.how.title': 'Comment ça marche',
       

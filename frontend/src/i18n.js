@@ -204,7 +204,7 @@ const resources = {
       'common.back': 'Retour',
       'common.loading': 'Chargement...',
       'common.error': 'Une erreur s\'est produite',
-      'common.currency': '€',
+      'common.currency': 'CHF',
       
       // Footer
       'footer.terms': 'Conditions d\'utilisation',

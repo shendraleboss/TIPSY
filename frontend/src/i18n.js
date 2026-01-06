@@ -123,19 +123,19 @@ const resources = {
       
       // Auth
       'auth.title': 'Bienvenue sur Tipsy',
-      'auth.subtitle': 'Entrez votre numéro de téléphone pour continuer',
+      'auth.subtitle': 'Entre ton numéro de téléphone pour continuer',
       'auth.phone.label': 'Numéro de téléphone',
       'auth.phone.placeholder': '+33 6 12 34 56 78',
       'auth.send.otp': 'Envoyer le code',
-      'auth.otp.title': 'Entrez le code de vérification',
+      'auth.otp.title': 'Entre le code de vérification',
       'auth.otp.subtitle': 'Nous avons envoyé un code à',
       'auth.otp.label': 'Code de vérification',
       'auth.verify': 'Vérifier',
       'auth.resend': 'Renvoyer le code',
       
       // Profile Setup
-      'profile.setup.title': 'Créez votre profil',
-      'profile.setup.subtitle': 'Faites savoir aux clients qui ils donnent un pourboire',
+      'profile.setup.title': 'Crée ton profil',
+      'profile.setup.subtitle': 'Fais savoir aux clients qui ils donnent un pourboire',
       'profile.first.name': 'Prénom',
       'profile.photo.url': 'URL de la photo (optionnel)',
       'profile.save': 'Enregistrer le profil',

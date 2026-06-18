@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import api from '@/utils/api';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,7 +27,7 @@ const Auth = () => {
 
     setLoading(true);
     try {
-      await axios.post(`${API}/auth/send-otp`, { phone });
+      await api.post(`/auth/send-otp`, { phone });
       toast.success(t('auth.otp.sent'));
       setStep('otp');
     } catch (error) {
@@ -43,8 +43,13 @@ const Auth = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post(`${API}/auth/verify-otp`, { phone, otp });
+      const response = await api.post(`/auth/verify-otp`, { phone, otp });
       const data = response.data;
+
+      // On sauvegarde le token de sécurité ici
+      if (data.access_token) {
+        localStorage.setItem('tipsy_token', data.access_token);
+      }
 
       if (data.is_new_user) {
         // New user - go to profile setup
@@ -61,7 +66,6 @@ const Auth = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center px-6">
       {/* Language switcher */}

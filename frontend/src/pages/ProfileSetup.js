@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import api from '@/utils/api';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,7 +27,7 @@ const ProfileSetup = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post(`${API}/servers/profile`, {
+      const response = await api.post(`/servers/profile`, {
         phone,
         first_name: firstName,
         photo_url: photoUrl || null

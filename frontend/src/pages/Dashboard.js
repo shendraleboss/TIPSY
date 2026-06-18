@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import api from '@/utils/api';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -37,9 +37,9 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const [statsRes, tipsRes, stripeRes] = await Promise.all([
-        axios.get(`${API}/servers/${serverId}/stats`),
-        axios.get(`${API}/servers/${serverId}/tips`),
-        axios.get(`${API}/servers/${serverId}/stripe-connect/status`)
+        api.get(`/servers/${serverId}/stats`),
+        api.get(`/servers/${serverId}/tips`),
+        api.get(`/servers/${serverId}/stripe-connect/status`)
       ]);
 
       setStats(statsRes.data);
@@ -55,7 +55,7 @@ const Dashboard = () => {
   const handleConnectStripe = async () => {
     setConnectingStripe(true);
     try {
-      const response = await axios.post(`${API}/servers/${server.id}/stripe-connect/onboard`, {
+      const response = await api.post(`/servers/${server.id}/stripe-connect/onboard`, {
         refresh_url: `${window.location.origin}/dashboard`,
         return_url: `${window.location.origin}/dashboard`
       });

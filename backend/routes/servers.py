@@ -84,10 +84,14 @@ async def create_stripe_connect_account(server_id: str, request: Request, curren
     
     try:
         if not server_doc.get("stripe_account_id"):
+            # Nettoyage du numéro pour créer un email Stripe valide
+            phone_number = server_doc.get("phone", "")
+            clean_phone = phone_number.replace(" ", "").replace("+", "")
+            
             account = stripe.Account.create(
                 type="express",
                 country="CH",
-                email=f"{server_doc['phone']}@tipsy.app",
+                email=f"{clean_phone}@tipsy.app",
                 capabilities={
                     "card_payments": {"requested": True},
                     "transfers": {"requested": True},
@@ -102,8 +106,8 @@ async def create_stripe_connect_account(server_id: str, request: Request, curren
             stripe_account_id = server_doc["stripe_account_id"]
         
         body = await request.json()
-        refresh_url = body.get("refresh_url", "https://tipsy-pay.preview.emergentagent.com/dashboard")
-        return_url = body.get("return_url", "https://tipsy-pay.preview.emergentagent.com/dashboard")
+        refresh_url = body.get("refresh_url", "http://localhost:3000/dashboard")
+        return_url = body.get("return_url", "http://localhost:3000/dashboard")
         
         account_link = stripe.AccountLink.create(
             account=stripe_account_id,
@@ -112,9 +116,11 @@ async def create_stripe_connect_account(server_id: str, request: Request, curren
             type="account_onboarding",
         )
         return {"url": account_link.url, "stripe_account_id": stripe_account_id}
+        
     except Exception as e:
         logger.error(f"Error creating Stripe Connect account: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        # Sécurité : on renvoie un message générique au lieu de la stack trace
+        raise HTTPException(status_code=500, detail="Impossible d'initialiser la connexion avec Stripe.")
 
 @router.get("/{server_id}/stripe-connect/status")
 async def get_stripe_connect_status(server_id: str, current_phone: str = Depends(get_current_phone)):

@@ -14,7 +14,10 @@ class Server(BaseModel):
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 class ServerCreate(BaseModel):
-    phone: str
+    phone: str = Field(
+    ..., 
+    pattern=r"^\+[1-9]\d{1,14}$", #regex pour le format E.164
+    description="Doit être au format international E.164")
     first_name: str
     photo_url: Optional[str] = None
 

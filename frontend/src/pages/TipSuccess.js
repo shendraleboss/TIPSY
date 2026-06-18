@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import api from '@/utils/api';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { Card } from '@/components/ui/card';
 import { Sparkles, CheckCircle } from 'lucide-react';
 
@@ -33,7 +33,7 @@ const TipSuccess = () => {
     }
 
     try {
-      const response = await axios.get(`${API}/tips/checkout-status/${sessionId}`);
+      const response = await api.get(`/tips/checkout-status/${sessionId}`);
       const data = response.data;
 
       if (data.payment_status === 'paid') {

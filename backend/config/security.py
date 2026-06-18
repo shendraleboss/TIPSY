@@ -3,14 +3,16 @@ import jwt
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
 # La clé secrète (À AJOUTER DANS TON .ENV EN PRODUCTION)
 SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "tipsy-secret-key-super-robuste-pour-le-dev")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # Le token expire dans 7 jours
 
-# Indique à FastAPI qu'on utilise un schéma d'authentification "Bearer"
 security = HTTPBearer()
+limiter = Limiter(key_func=get_remote_address)
 
 def create_access_token(data: dict):
     to_encode = data.copy()

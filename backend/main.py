@@ -4,6 +4,10 @@ import os
 import logging
 from contextlib import asynccontextmanager
 
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from config.security import limiter
+
 # Imports des configurations et des routes
 from config.db import client
 from routes import auth, servers, tips
@@ -22,8 +26,10 @@ async def lifespan(app: FastAPI):
     # après = arrêt du serveur
     client.close()
 
-# Création de l'application FastAPI (en lui passant le lifespan qu'on vient de créer)
+# Création de l'application FastAPI
 app = FastAPI(title="Tipsy API", lifespan=lifespan)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Configuration des CORS
 cors_origins = os.environ.get('CORS_ORIGINS', 'http://localhost:3000').split(',')

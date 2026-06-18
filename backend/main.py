@@ -32,7 +32,16 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Configuration des CORS
-cors_origins = os.environ.get('CORS_ORIGINS', 'http://localhost:3000').split(',')
+raw_cors = os.environ.get('CORS_ORIGINS', 'http://localhost:3000')
+cors_origins = [
+    origin.strip() 
+    for origin in raw_cors.split(',') 
+    if origin.strip() and origin.strip() != "*"
+]
+
+if not cors_origins:
+    cors_origins = ["http://localhost:3000"]
+    
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,

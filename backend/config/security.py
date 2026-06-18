@@ -5,11 +5,16 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # La clé secrète (À AJOUTER DANS TON .ENV EN PRODUCTION)
-SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "tipsy-secret-key-super-robuste-pour-le-dev")
+SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError("JWT_SECRET_KEY must be set in the environment variables.")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # Le token expire dans 7 jours
+ACCESS_TOKEN_EXPIRE_MINUTES = 120  # Le token expire dans 2 heures
 
 security = HTTPBearer()
 limiter = Limiter(key_func=get_remote_address)

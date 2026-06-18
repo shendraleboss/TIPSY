@@ -13,8 +13,16 @@ logger = logging.getLogger(__name__)
 
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
 
+allowed_origins_env= os.environ.get('ALLOWED_ORIGINS', 'http://localhost:3000')
+ALLOWED_ORIGINS = [origin.strip() for origin in allowed_origins_env.split(',')]
 @router.post("/create-checkout")
 async def create_tip_checkout(tip_request: TipCheckoutRequest):
+    if tip_request.host_url not in ALLOWED_ORIGINS:
+        logger.warning(f"Tentative de redirection suspecte bloquée : {tip_request.host_url}")
+        raise HTTPException(
+            status_code=400, 
+            detail="Origine de la requête non autorisée."
+        )
     # DEV MODE EXCEPTION FOR TESTING
     dev_mode = os.environ.get('DEV_MODE', 'false').lower() == 'true'
     if dev_mode and "sk_test" not in str(stripe.api_key):

@@ -18,7 +18,7 @@ stripe.api_key = os.environ.get('STRIPE_API_KEY')
 async def create_or_update_server_profile(
     server_data: ServerCreate,
     current_phone: str = Depends(get_current_phone)
-    ):
+):
     if server_data.phone != current_phone:
         raise HTTPException(status_code=403, detail="Vous n'êtes pas autorisé à modifier ce profil.")
     
@@ -45,15 +45,25 @@ async def get_server_by_phone(phone: str, current_phone: str = Depends(get_curre
         raise HTTPException(status_code=404, detail="Server not found")
     return Server(**server_doc)
 
-@router.get("/{server_id}", response_model=Server)
+@router.get("/{server_id}")
 async def get_server(server_id: str):
-    server_doc = await db.servers.find_one({"id": server_id}, {"_id": 0})
+    # On ne demande à la BDD que l'ID, le prénom et la photo (1 = inclure, 0 = exclure)
+    server_doc = await db.servers.find_one(
+        {"id": server_id}, 
+        {"_id": 0, "id": 1, "first_name": 1, "photo_url": 1}
+    )
     if not server_doc:
         raise HTTPException(status_code=404, detail="Server not found")
-    return Server(**server_doc)
+    
+    # On renvoie directement le dictionnaire filtré au lieu du modèle Pydantic complet
+    return server_doc
 
 @router.get("/{server_id}/tips", response_model=List[Tip])
 async def get_server_tips(server_id: str, current_phone: str = Depends(get_current_phone)):
+    server_doc = await db.servers.find_one({"id": server_id}, {"_id": 0})
+    if not server_doc or server_doc.get("phone") != current_phone:
+        raise HTTPException(status_code=403, detail="Accès refusé.")
+
     tips = await db.tips.find(
         {"server_id": server_id, "payment_status": "paid"},
         {"_id": 0}
@@ -61,7 +71,11 @@ async def get_server_tips(server_id: str, current_phone: str = Depends(get_curre
     return [Tip(**tip) for tip in tips]
 
 @router.get("/{server_id}/stats")
-async def get_server_stats(server_id: str,current_phone: str = Depends(get_current_phone)):
+async def get_server_stats(server_id: str, current_phone: str = Depends(get_current_phone)):
+    server_doc = await db.servers.find_one({"id": server_id}, {"_id": 0})
+    if not server_doc or server_doc.get("phone") != current_phone:
+        raise HTTPException(status_code=403, detail="Accès refusé.")
+
     tips = await db.tips.find(
         {"server_id": server_id, "payment_status": "paid"},
         {"_id": 0}
@@ -82,9 +96,11 @@ async def create_stripe_connect_account(server_id: str, request: Request, curren
     if not server_doc:
         raise HTTPException(status_code=404, detail="Server not found")
     
+    if server_doc.get("phone") != current_phone:
+        raise HTTPException(status_code=403, detail="Accès refusé.")
+    
     try:
         if not server_doc.get("stripe_account_id"):
-            # Nettoyage du numéro pour créer un email Stripe valide
             phone_number = server_doc.get("phone", "")
             clean_phone = phone_number.replace(" ", "").replace("+", "")
             
@@ -119,7 +135,6 @@ async def create_stripe_connect_account(server_id: str, request: Request, curren
         
     except Exception as e:
         logger.error(f"Error creating Stripe Connect account: {e}")
-        # Sécurité : on renvoie un message générique au lieu de la stack trace
         raise HTTPException(status_code=500, detail="Impossible d'initialiser la connexion avec Stripe.")
 
 @router.get("/{server_id}/stripe-connect/status")
@@ -127,6 +142,9 @@ async def get_stripe_connect_status(server_id: str, current_phone: str = Depends
     server_doc = await db.servers.find_one({"id": server_id}, {"_id": 0})
     if not server_doc:
         raise HTTPException(status_code=404, detail="Server not found")
+    
+    if server_doc.get("phone") != current_phone:
+        raise HTTPException(status_code=403, detail="Accès refusé.")
     
     stripe_account_id = server_doc.get("stripe_account_id")
     if not stripe_account_id:
@@ -148,4 +166,5 @@ async def get_stripe_connect_status(server_id: str, current_phone: str = Depends
         }
     except Exception as e:
         logger.error(f"Error retrieving Stripe account: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        # On masque l'erreur détaillée pour éviter de divulguer des informations sensibles
+        raise HTTPException(status_code=500, detail="Erreur lors de la vérification du statut Stripe.")

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import api from '@/utils/api';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,7 +31,7 @@ const TipPage = () => {
   const loadServer = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API}/servers/${serverId}`);
+      const response = await api.get(`/servers/${serverId}`);
       setServer(response.data);
     } catch (error) {
       toast.error(t('common.error'));
@@ -84,7 +84,7 @@ const TipPage = () => {
   const handlePayNow = async () => {
     setProcessingPayment(true);
     try {
-      const response = await axios.post(`${API}/tips/create-checkout`, {
+      const response = await api.post(`/tips/create-checkout`, {
         server_id: serverId,
         amount: breakdown.tip,
         host_url: window.location.origin

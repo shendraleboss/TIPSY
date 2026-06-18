@@ -1,0 +1,17 @@
+# --- LE CŒUR DE L'API ---
+fastapi==0.110.1
+uvicorn==0.25.0
+
+# --- BASE DE DONNÉES ---
+motor==3.7.1
+dnspython==2.8.0
+
+# --- SÉCURITÉ & VALIDATION ---
+pydantic==2.12.5
+PyJWT==2.13.0
+slowapi==0.1.10
+python-dotenv==1.2.1
+
+# --- SERVICES EXTERNES ---
+stripe==15.2.0
+twilio==9.9.0

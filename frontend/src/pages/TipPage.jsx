@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import api from '@/utils/api';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Sparkles, ArrowRight, Heart } from 'lucide-react';
 import { toast } from 'sonner';
+import { set } from 'date-fns';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
 const TipPage = () => {
   const { serverId } = useParams();
@@ -23,15 +22,17 @@ const TipPage = () => {
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [breakdown, setBreakdown] = useState(null);
   const [processingPayment, setProcessingPayment] = useState(false);
+  const [idempotencyKey, setIdempotencyKey] = useState('');
 
   useEffect(() => {
     loadServer();
+    setIdempotencyKey(crypto.randomUUID());
   }, [serverId]);
 
   const loadServer = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API}/servers/${serverId}`);
+      const response = await api.get(`/servers/${serverId}`);
       setServer(response.data);
     } catch (error) {
       toast.error(t('common.error'));
@@ -84,10 +85,11 @@ const TipPage = () => {
   const handlePayNow = async () => {
     setProcessingPayment(true);
     try {
-      const response = await axios.post(`${API}/tips/create-checkout`, {
+      const response = await api.post(`/tips/create-checkout`, {
         server_id: serverId,
         amount: breakdown.tip,
-        host_url: window.location.origin
+        host_url: window.location.origin,
+        idempotency_key: idempotencyKey
       });
 
       // Redirect to Stripe checkout
@@ -135,7 +137,7 @@ const TipPage = () => {
                 />
               )}
               <div>
-                <h1 className="font-quasimoda font-bold text-3xl text-white">
+                <h1 className="font-quasimoda font-bold text-3xl text-primary">
                   {t('tip.title')} {server.first_name}
                 </h1>
                 <p className="text-muted-foreground mt-2">{t('tip.select.amount')}</p>
@@ -155,7 +157,7 @@ const TipPage = () => {
                   }`}
                   data-testid={`preset-amount-${amount}`}
                 >
-                  <p className="font-quasimoda font-bold text-3xl text-white">
+                  <p className="font-quasimoda font-bold text-3xl text-primary">
                     {amount}{t('common.currency')}
                   </p>
                 </button>
@@ -191,13 +193,13 @@ const TipPage = () => {
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Payment Breakdown */}
             <div className="text-center space-y-2">
-              <h1 className="font-quasimoda font-bold text-2xl text-white">{t('tip.breakdown.title')}</h1>
+              <h1 className="font-quasimoda font-bold text-2xl text-primary">{t('tip.breakdown.title')}</h1>
             </div>
 
             <Card className="glass-card p-6 rounded-3xl space-y-4" data-testid="payment-breakdown">
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">{t('tip.breakdown.tip')}</span>
-                <span className="font-quasimoda font-bold text-lg text-white">
+                <span className="font-quasimoda font-bold text-lg text-primary">
                   {breakdown.tip.toFixed(2)}{t('common.currency')}
                 </span>
               </div>
@@ -218,7 +220,7 @@ const TipPage = () => {
 
               <div className="border-t border-white/10 pt-4 mt-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="font-quasimoda font-bold text-lg text-white">{t('tip.breakdown.total')}</span>
+                  <span className="font-quasimoda font-bold text-lg text-primary">{t('tip.breakdown.total')}</span>
                   <span className="font-quasimoda font-bold text-2xl text-primary">
                     {breakdown.total.toFixed(2)}{t('common.currency')}
                   </span>

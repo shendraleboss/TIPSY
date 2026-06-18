@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import api from '@/utils/api';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { Card } from '@/components/ui/card';
 import { Sparkles, CheckCircle } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
 const TipSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -33,7 +31,7 @@ const TipSuccess = () => {
     }
 
     try {
-      const response = await axios.get(`${API}/tips/checkout-status/${sessionId}`);
+      const response = await api.get(`/tips/checkout-status/${sessionId}`);
       const data = response.data;
 
       if (data.payment_status === 'paid') {

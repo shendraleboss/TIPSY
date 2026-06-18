@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import api from '@/utils/api';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { QrCode, LogOut, Sparkles, Link as LinkIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -37,9 +35,9 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const [statsRes, tipsRes, stripeRes] = await Promise.all([
-        axios.get(`${API}/servers/${serverId}/stats`),
-        axios.get(`${API}/servers/${serverId}/tips`),
-        axios.get(`${API}/servers/${serverId}/stripe-connect/status`)
+        api.get(`/servers/${serverId}/stats`),
+        api.get(`/servers/${serverId}/tips`),
+        api.get(`/servers/${serverId}/stripe-connect/status`)
       ]);
 
       setStats(statsRes.data);
@@ -55,7 +53,7 @@ const Dashboard = () => {
   const handleConnectStripe = async () => {
     setConnectingStripe(true);
     try {
-      const response = await axios.post(`${API}/servers/${server.id}/stripe-connect/onboard`, {
+      const response = await api.post(`/servers/${server.id}/stripe-connect/onboard`, {
         refresh_url: `${window.location.origin}/dashboard`,
         return_url: `${window.location.origin}/dashboard`
       });
@@ -118,7 +116,7 @@ const Dashboard = () => {
               <Card className="glass-card p-6 rounded-3xl" data-testid="tip-count-card">
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">{t('dashboard.tip.count')}</p>
-                  <p className="font-quasimoda font-bold text-3xl text-white">
+                  <p className="font-quasimoda font-bold text-3xl text-primary">
                     {stats?.tip_count || 0}
                   </p>
                 </div>
@@ -128,7 +126,7 @@ const Dashboard = () => {
             <Card className="glass-card p-6 rounded-3xl" data-testid="average-tip-card">
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground">{t('dashboard.average.tip')}</p>
-                <p className="font-quasimoda font-bold text-2xl text-white">
+                <p className="font-quasimoda font-bold text-2xl text-primary">
                   {stats?.average_tip || 0}{t('common.currency')}
                 </p>
               </div>
@@ -153,7 +151,7 @@ const Dashboard = () => {
                       <LinkIcon className="h-6 w-6 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-quasimoda font-bold text-white">
+                      <h3 className="font-quasimoda font-bold text-primary text-lg">
                         Connecte ton compte Stripe
                       </h3>
                       <p className="text-sm text-muted-foreground mt-1">
@@ -188,7 +186,7 @@ const Dashboard = () => {
 
             {/* Recent Tips */}
             <div className="space-y-4">
-              <h2 className="font-quasimoda font-bold text-xl text-white">{t('dashboard.recent.tips')}</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-primary">{t('dashboard.recent.tips')}</h2>
 
               {tips.length === 0 ? (
                 <Card className="glass-card p-6 rounded-3xl text-center" data-testid="no-tips-message">
@@ -201,7 +199,7 @@ const Dashboard = () => {
                     <Card key={tip.id || index} className="glass-card p-4 rounded-2xl" data-testid={`tip-item-${index}`}>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-quasimoda font-bold text-lg text-white">
+                          <p className="font-quasimoda font-bold text-lg text-primary">
                             {tip.amount}{t('common.currency')}
                           </p>
                           <p className="text-sm text-muted-foreground">

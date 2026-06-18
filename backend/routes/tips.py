@@ -77,7 +77,7 @@ async def create_tip_checkout(tip_request: TipCheckoutRequest):
                 "transfer_data": {"destination": stripe_account_id},
             }
         
-        session = stripe.checkout.Session.create(**session_params)
+        session = stripe.checkout.Session.create(idempotency_key=tip_request.idempotency_key, **session_params)
         
         transaction = PaymentTransaction(
             session_id=session.id,

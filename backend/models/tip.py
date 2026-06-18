@@ -42,3 +42,6 @@ class TipCheckoutRequest(BaseModel):
     
     # L'URL doit avoir une longueur cohérente
     host_url: str = Field(..., min_length=10, max_length=200)
+    
+    # Ticket unique
+    idempotency_key: str = Field(..., min_length=10, max_length=50, description="Clé anti-doublon") 

@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Sparkles, ArrowRight, Heart } from 'lucide-react';
 import { toast } from 'sonner';
+import { set } from 'date-fns';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -23,9 +24,11 @@ const TipPage = () => {
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [breakdown, setBreakdown] = useState(null);
   const [processingPayment, setProcessingPayment] = useState(false);
+  const [idempotencyKey, setIdempotencyKey] = useState('');
 
   useEffect(() => {
     loadServer();
+    setIdempotencyKey(crypto.randomUUID());
   }, [serverId]);
 
   const loadServer = async () => {
@@ -87,7 +90,8 @@ const TipPage = () => {
       const response = await api.post(`/tips/create-checkout`, {
         server_id: serverId,
         amount: breakdown.tip,
-        host_url: window.location.origin
+        host_url: window.location.origin,
+        idempotency_key: idempotencyKey
       });
 
       // Redirect to Stripe checkout

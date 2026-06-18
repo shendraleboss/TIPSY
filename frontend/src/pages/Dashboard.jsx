@@ -8,8 +8,6 @@ import { Card } from '@/components/ui/card';
 import { QrCode, LogOut, Sparkles, Link as LinkIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
 const Dashboard = () => {
   const navigate = useNavigate();

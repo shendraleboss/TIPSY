@@ -10,8 +10,6 @@ import { Sparkles, ArrowRight, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import { set } from 'date-fns';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
 const TipPage = () => {
   const { serverId } = useParams();

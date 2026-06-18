@@ -6,6 +6,7 @@ from twilio.rest import Client
 
 from config.db import db
 from models.server import SendOTPRequest, VerifyOTPRequest
+from config.security import create_access_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ async def send_otp(request: SendOTPRequest):
         logger.info(f"[DEV MODE] OTP for {request.phone}: {dev_otp_code}")
         return {
             "success": True,
-            "message": f"Code envoyé (DEV: {dev_otp_code})",
+            "message": f"Code envoyé avec succès.",
             "status": "dev_mode"
         }
     
@@ -43,7 +44,7 @@ async def send_otp(request: SendOTPRequest):
         }
     except Exception as e:
         logger.error(f"Error sending OTP: {e}")
-        raise HTTPException(status_code=400, detail=f"Failed to send OTP: {str(e)}")
+        raise HTTPException(status_code=500, detail="Une erreur interne est survenue lors de l'envoi du SMS.")
 
 @router.post("/verify-otp")
 async def verify_otp(request: VerifyOTPRequest):
@@ -64,9 +65,11 @@ async def verify_otp(request: VerifyOTPRequest):
             raise
         except Exception as e:
             logger.error(f"Error verifying OTP: {e}")
-            raise HTTPException(status_code=400, detail=f"Failed to verify OTP: {str(e)}")
+            raise HTTPException(status_code=500, detail="Le service de vérification est temporairement indisponible.")
     
     server_doc = await db.servers.find_one({"phone": request.phone}, {"_id": 0})
+    
+    access_token = create_access_token(data={"sub": request.phone}) #Création en cachant le numéro de téléphone
     
     if server_doc:
         await db.phone_verifications.update_one(
@@ -74,6 +77,14 @@ async def verify_otp(request: VerifyOTPRequest):
             {"$set": {"verified": True, "verified_at": datetime.now(timezone.utc).isoformat()}},
             upsert=True
         )
-        return {"success": True, "is_new_user": False, "server": server_doc}
-    
-    return {"success": True, "is_new_user": True, "phone": request.phone}
+        return {
+            "success": True, 
+            "is_new_user": False, 
+            "server": server_doc,
+            "access_token": access_token # <- On le renvoie au client
+        }
+          
+    return {"success": True, 
+        "is_new_user": True, 
+        "phone": request.phone,
+        "access_token": access_token}

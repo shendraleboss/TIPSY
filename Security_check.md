@@ -1,144 +1,209 @@
-# Recommandations de sécurité — Projet Tipsy
+# Security Check — Projet Tipsy (audit du code actuel)
 
-> Liste actionable des changements à appliquer pour sécuriser l'application (backend FastAPI + frontend React).
-
-## Résumé rapide
-- Type d'application : backend FastAPI (MongoDB, Stripe, Twilio) + frontend React.
-- Risques majeurs identifiés : contournement OTP (dev mode), absence d'authentification server-side, CORS trop permissif, webhooks non vérifiés, absence de rate-limiting, secrets en clair, validation d'entrées insuffisante.
+Date: 2026-06-18  
+Périmètre audité: backend FastAPI (`backend/main.py`, `backend/routes/*`, `backend/models/*`, `backend/config/db.py`), frontend React (`frontend/src/pages/*`), dépendances (`backend/requirements*.txt`, `frontend/package.json`), configuration (`.gitignore`, `backend/.env`).
 
 ---
 
-## Priorités — Actions immédiates (Critique / à faire en priorité)
+## Résumé exécutif
 
-- **Désactiver DEV_MODE en production** :
-  - Retirer la valeur par défaut de `DEV_OTP_CODE` et empêcher `DEV_MODE` d'être vrai en production.
-  - Failsafe : refuser le démarrage si `DEV_MODE=false` mais `TWILIO_*` requises sont absentes.
-  - Fichier concerné : [backend/server.py](backend/server.py)
+Le projet présente plusieurs **risques de cybersécurité importants** au niveau authentification, exposition d’informations, configuration et anti-abus.
 
-- **Ajouter authentification server-side après OTP** :
-  - Après vérification OTP, émettre un token signé (JWT) lié au `server.id` et au téléphone.
-  - Exiger ce token (via header `Authorization: Bearer <token>`) pour tous les endpoints sensibles (`/servers/profile`, `/tips/create-checkout`, `/servers/*/stripe-connect/*`).
-  - Ne pas se fier aux données `sessionStorage` côté client pour autoriser les actions.
-  - Fichier concerné : [backend/server.py](backend/server.py)
+### Risques critiques
+1. **Bypass OTP en mode développement (`DEV_MODE`)** avec code OTP statique (`123456`) et divulgation du code dans la réponse API.
+2. **Absence d’authentification serveur persistante** (pas de JWT/session signée), avec confiance excessive dans `sessionStorage` côté client.
+3. **CORS permissif par défaut** (`allow_origins='*'`) avec `allow_credentials=True`.
+4. **Fuite potentielle d’informations internes** via messages d’erreur renvoyés au client (`detail=str(e)`).
 
-- **Valider la signature des webhooks Stripe et protéger contre le replay** :
-  - Utiliser `stripe.Webhook.construct_event` et la `endpoint_secret` pour valider `stripe_signature`.
-  - Refuser et logger les événements non valides. Implémenter un mécanisme anti-replay (ex. vérifier `id` et timestamp, stocker derniers ids traités).
-  - Fichier concerné : [backend/server.py](backend/server.py) et la lib `emergentintegrations.payments.stripe.checkout` (à auditer).
-
-- **Restreindre CORS et disable allow_credentials si non nécessaire** :
-  - Ne pas utiliser `'*'` en `allow_origins` en production surtout avec `allow_credentials=True`.
-  - Déployer une variable `CORS_ORIGINS` explicite contenant la liste d'origines autorisées.
-  - Fichier concerné : [backend/server.py](backend/server.py)
-
-- **Rate-limiting pour endpoints publics** :
-  - Ajouter rate-limit sur `/auth/send-otp`, `/auth/verify-otp`, `/tips/create-checkout` et endpoints sensibles.
-  - Implémentation simple : `fastapi-limiter` (Redis) ou middleware nginx/Cloud WAF.
+### Risques élevés
+5. **Pas de rate limiting / anti-bruteforce** sur endpoints OTP et paiements.
+6. **Validation d’entrée insuffisante** (`host_url`, `photo_url`, montants) pouvant permettre abus/logique de redirection mal maîtrisée.
+7. **Fichier `backend/.env` présent dans le workspace** avec clés sensibles d’exemple (même placeholders): surface d’erreur opérationnelle.
 
 ---
 
-## Hautes priorités (Important)
+## Constats techniques détaillés
 
-- **Protéger et gérer les secrets** :
-  - S'assurer que `.env` n'est pas commité, utiliser un secret manager (Vault, AWS Secrets Manager, GCP Secret Manager).
-  - Ne pas logger des secrets ou OTPs en clair (audit des `logger.info/error`).
-  - Rotation régulière des clés (`STRIPE_API_KEY`, `TWILIO_*`, `MONGO_URL`).
+## 1) Authentification & autorisation
 
-- **Validation stricte des URLs de redirection** :
-  - Les `refresh_url`/`return_url` envoyées pour Stripe onboarding doivent être validées contre une whitelist.
-  - Eviter tout open-redirect/vecteur d'hameçonnage.
-  - Fichier concerné : [backend/server.py](backend/server.py)
+### 1.1 `DEV_MODE` + OTP statique (Critique)
+- Fichier: `backend/routes/auth.py`
+- Constat:
+  - `dev_mode = os.environ.get('DEV_MODE', 'false').lower() == 'true'`
+  - `dev_otp_code = os.environ.get('DEV_OTP_CODE', '123456')`
+  - En mode dev, l’API retourne le code OTP dans la réponse (`"Code envoyé (DEV: ... )"`) et dans les logs.
+- Risque:
+  - Si `DEV_MODE` est activé par erreur en prod, authentification triviale à compromettre.
 
-- **Validation & sanitation des entrées** :
-  - Valider `photo_url` (scheme `https?`, host autorisé ou passer par un proxy d'images), `amount` côté serveur (borne min/max), `host_url` (origines autorisées).
-  - Rejeter ou normaliser les inputs malformés.
+### 1.2 Pas de token de session (Critique)
+- Fichiers: `backend/routes/auth.py`, `backend/routes/servers.py`, `backend/routes/tips.py`, `frontend/src/pages/Auth.js`, `frontend/src/pages/Dashboard.js`, `frontend/src/pages/ProfileSetup.js`, `frontend/src/pages/QRCodePage.js`
+- Constat:
+  - Après vérification OTP, le backend ne fournit pas de JWT/session signée.
+  - Le frontend stocke des objets serveur dans `sessionStorage` et continue les flux sans preuve cryptographique d’identité.
+  - Les endpoints sensibles ne vérifient pas d’`Authorization`.
+- Risque:
+  - Usurpation d’identité logique via modification des identifiants côté client / appels API directs.
 
-- **Limiter les permissions DB** :
-  - Le compte Mongo utilisé par l'appli doit avoir des permissions minimales (ne pas être admin).
-  - Forcer TLS (mongodb+srv:// or mongodb:// with TLS) et restreindre l'accès par IP.
-
-- **Masquer les erreurs internes côté client** :
-  - Ne pas renvoyer `str(e)` directement dans les réponses client. Utiliser messages génériques et logger les détails en interne.
-
----
-
-## Moyennes priorités (Améliorations recommandées)
-
-- **Sécuriser le stockage côté client** :
-  - Remplacer la logique actuelle qui stocke `server` en `sessionStorage` par un token JWT côté serveur. Toute action server-side doit être validée par ce token.
-
-- **Audit des dépendances** :
-  - Lancer `pip-audit` et `safety` pour Python ; `npm audit` / `yarn audit` pour le frontend.
-  - Mettre en place Dependabot / Snyk pour mises à jour automatiques.
-  - Fichier concerné : [backend/requirements.txt](backend/requirements.txt), [frontend/package.json](frontend/package.json)
-
-- **Content Security Policy (CSP)** :
-  - Ajouter des en-têtes CSP si l'app sert des pages HTML ou via reverse proxy.
-
-- **Logging & Monitoring** :
-  - Centraliser logs, surveiller anomalies (ex. trop d'OTP envoyés pour un numéro), alertes pour webhooks échoués.
+### 1.3 Endpoints d’admin logique non protégés (Élevé)
+- Fichiers: `backend/routes/servers.py`, `backend/routes/tips.py`
+- Constat:
+  - Création/édition profil, onboarding Stripe Connect, statut Stripe, création checkout ne requièrent pas de token d’utilisateur authentifié.
+- Risque:
+  - Abus fonctionnels (modification ou déclenchement d’actions liées à des `server_id` connus).
 
 ---
 
-## Faibles priorités (Nice-to-have)
+## 2) Paiements & webhooks Stripe
 
-- **HSTS & HTTPS strict** : s'assurer que la configuration de déploiement impose HTTPS et HSTS.
-- **Scanner le dépôt pour secrets** : utiliser `git-secrets` ou `truffleHog` pour s'assurer qu'aucune clé API n'est committée.
-- **Tests de sécurité automatisés** : ajouter des tests d'intégration pour webhooks, retry, et mauvais payloads.
+### 2.1 Signature webhook Stripe validée (Point positif)
+- Fichier: `backend/routes/tips.py`
+- Constat:
+  - `stripe.Webhook.construct_event(...)` est utilisé avec `STRIPE_WEBHOOK_SECRET`.
+- Reste à améliorer:
+  - Pas de protection anti-rejeu explicite (idempotence stricte et suivi d’`event.id` à renforcer).
 
----
+### 2.2 URL de retour construites depuis `host_url` fourni par le client (Élevé)
+- Fichier: `backend/routes/tips.py`
+- Constat:
+  - `success_url` et `cancel_url` sont dérivées de `tip_request.host_url` (entrée client).
+- Risque:
+  - Redirections vers des domaines non attendus / abus de parcours de paiement.
 
-## Checklist actionable (tâches concrètes)
-
-- [ ] Retirer `DEV_OTP_CODE` par défaut et sécuriser `DEV_MODE`.
-- [ ] Implémenter JWT après OTP ; exiger `Authorization` sur endpoints sensibles.
-- [ ] Valider la signature Stripe dans `/webhook/stripe` (endpoint secret + anti-replay).
-- [ ] Restreindre `CORS_ORIGINS` en prod ; refuser `'*'` avec `allow_credentials=True`.
-- [ ] Ajouter rate-limiting (Redis-backed) pour endpoints publics.
-- [ ] Valider `return_url`/`refresh_url` contre whitelist.
-- [ ] Mettre en place un secret manager; retirer secrets du repo.
-- [ ] Lancer `pip-audit` et `yarn audit` puis corriger vulnérabilités critiques.
-- [ ] Forcer TLS et rôles minimaux pour MongoDB.
-- [ ] Remplacer confiance sur `sessionStorage` par vérifications server-side.
-
----
-
-## Emplacement des modifications recommandées
-- Back-end principal : [backend/server.py](backend/server.py)
-- Dépendances Python : [backend/requirements.txt](backend/requirements.txt)
-- Front-end : [frontend/src/pages/*](frontend/src/pages/)
-- Manifeste front-end : [frontend/package.json](frontend/package.json)
+### 2.3 Mode dev checkout fake (Moyen)
+- Fichier: `backend/routes/tips.py`
+- Constat:
+  - En dev, un faux checkout est retourné selon condition sur clé Stripe.
+- Risque:
+  - Confusion opérationnelle si activé hors contexte de test.
 
 ---
 
-## Propositions d'implémentation rapides
+## 3) CORS, config, erreurs
 
-- JWT minimal : émettre un JWT avec `server_id`, expiration courte (ex. 1h), signer avec `JWT_SECRET`. Ajouter un `Depends` dans FastAPI pour valider et injecter `current_server`.
+### 3.1 CORS trop permissif par défaut (Critique)
+- Fichier: `backend/main.py`
+- Constat:
+  - `allow_origins=os.environ.get('CORS_ORIGINS', '*').split(',')`
+  - `allow_credentials=True`
+- Risque:
+  - Ouverture excessive de l’API à des origines non prévues.
 
-- Vérification webhook Stripe (exemple simplifié) :
+### 3.2 Erreurs internes exposées au client (Élevé)
+- Fichiers: `backend/routes/auth.py`, `backend/routes/servers.py`, `backend/routes/tips.py`
+- Constat:
+  - Plusieurs `HTTPException(... detail=str(e))` ou messages détaillés.
+- Risque:
+  - Divulgation d’informations internes (stack, provider failures, détails infrastructure).
 
-```py
-import stripe
-from fastapi import HTTPException
-
-stripe.api_key = STRIPE_API_KEY
-endpoint_secret = os.environ.get('STRIPE_WEBHOOK_SECRET')
-
-try:
-    event = stripe.Webhook.construct_event(body, stripe_signature, endpoint_secret)
-except Exception:
-    raise HTTPException(status_code=400, detail='Invalid webhook signature')
-```
-
-- Rate limit : `fastapi-limiter` + Redis ; limiter sur `phone` et IP pour `/auth/send-otp`.
-
----
-
-## Questions pour vous (rapide)
-1. Voulez-vous que j'implémente automatiquement : (A) JWT auth après OTP, (B) validation Stripe webhook, (C) restreindre CORS, (D) un audit des dépendances ?
-2. Les secrets sont-ils gérés via un secret manager en production ou via `.env` sur le serveur ?
-3. L'application est-elle déjà en production ; si oui, quelle est l'URL/déploiement (pour config CORS/redirects) ?
+### 3.3 Gestion des secrets et `.env` (Élevé)
+- Fichier: `backend/.env` visible dans workspace
+- Constat:
+  - Présence d’un `.env` contenant des exemples de secrets/variables sensibles.
+- Risque:
+  - Erreur humaine (commit accidentel, partage non maîtrisé).
+- Note:
+  - Le `.gitignore` racine ignore bien les `.env*`, c’est positif.
 
 ---
 
-Si vous voulez, je peux commencer par appliquer les correctifs critiques (JWT + webhook validation + empêcher `DEV_MODE` en prod). Dites-moi quelles actions vous autorisez et je m'en occupe.
+## 4) Validation des entrées
+
+### 4.1 Schémas Pydantic trop permissifs (Moyen/Élevé)
+- Fichiers: `backend/models/server.py`, `backend/models/tip.py`
+- Constat:
+  - Pas de contraintes fortes sur format téléphone, plage montants, URL, etc.
+- Risque:
+  - Données incohérentes, abus métier, erreurs downstream.
+
+### 4.2 `photo_url` et rendu frontend (Moyen)
+- Fichiers: `backend/models/server.py`, `frontend/src/pages/*`
+- Constat:
+  - URL image non filtrée et rendue côté client.
+- Risque:
+  - Contenu externe non maîtrisé / tracking / comportement inattendu navigateur.
+
+---
+
+## 5) Anti-abus & monitoring
+
+### 5.1 Aucun rate-limit OTP / checkout (Élevé)
+- Fichiers: `backend/routes/auth.py`, `backend/routes/tips.py`
+- Constat:
+  - Pas de limitation par IP, téléphone, device.
+- Risque:
+  - Spam SMS, brute force OTP, abus API.
+
+### 5.2 Journalisation sensible en dev (Moyen)
+- Fichier: `backend/routes/auth.py`
+- Constat:
+  - OTP affiché en log en mode dev.
+- Risque:
+  - Exposition en cas de logs partagés.
+
+---
+
+## 6) Dépendances
+
+### 6.1 `requirements.txt` très large (Moyen)
+- Fichier: `backend/requirements.txt`
+- Constat:
+  - Beaucoup de dépendances non nécessaires à l’exécution backend.
+- Risque:
+  - Surface d’attaque élargie inutilement.
+
+### 6.2 `requirements-server.txt` plus propre (Point positif)
+- Fichier: `backend/requirements-server.txt`
+- Constat:
+  - Liste réduite plus adaptée au runtime backend.
+- Action:
+  - Conserver ce découpage et n’installer en prod que ce fichier.
+
+### 6.3 Audit dépendances incomplet (À faire)
+- Constat:
+  - `pip_audit` lancé mais sortie non exploitée (exit code 1 sans rapport lisible conservé).
+- Action:
+  - Relancer audit avec sortie fichier pour suivi CI.
+
+---
+
+## Plan de remédiation priorisé
+
+## Priorité P0 (immédiat)
+- [ ] Forcer `DEV_MODE=false` hors local et supprimer tout OTP en réponse API.
+- [ ] Implémenter authentification robuste post-OTP (JWT signé + expiration + refresh policy) et protéger endpoints sensibles.
+- [ ] Corriger CORS: supprimer `*`, définir whitelist stricte via `CORS_ORIGINS`.
+- [ ] Remplacer `detail=str(e)` par messages génériques côté client; garder détail uniquement en logs internes.
+
+## Priorité P1 (court terme)
+- [ ] Ajouter rate limiting (IP + phone) sur `/api/auth/send-otp`, `/api/auth/verify-otp`, `/api/tips/create-checkout`.
+- [ ] Valider strictement `host_url` sur liste d’origines autorisées.
+- [ ] Ajouter contraintes Pydantic (`constr`, `HttpUrl`, bornes montants, longueur OTP).
+- [ ] Implémenter idempotence/replay protection webhook via stockage `event.id`.
+
+## Priorité P2 (moyen terme)
+- [ ] Ajouter observabilité sécurité: alerting OTP, échecs Stripe, pics anormaux.
+- [ ] Durcir politique secrets (secret manager, rotation, permissions minimales DB).
+- [ ] Intégrer `pip-audit` + `npm/yarn audit` en CI avec rapport versionné.
+
+---
+
+## Checklist de vérification après correctifs
+- [ ] Impossible de s’authentifier avec OTP statique quand `DEV_MODE=false`.
+- [ ] Tous les endpoints sensibles rejettent requêtes sans JWT valide.
+- [ ] CORS ne permet que les origines prévues.
+- [ ] Webhooks Stripe invalides/rejoués sont rejetés.
+- [ ] Tentatives OTP excessives bloquées.
+- [ ] Erreurs API ne révèlent plus d’informations internes.
+
+---
+
+## Notes utiles
+- Le backend est désormais structuré en `main.py` + `routes/*` (l’ancien `backend/server.py` n’est plus la source principale d’exécution).
+- Le rapport précédent doit être considéré obsolète s’il référence uniquement `backend/server.py`.
+
+---
+
+## Conclusion
+
+Le projet est fonctionnel mais **pas encore prêt sécurité pour un usage production exposé internet** sans correctifs P0/P1.  
+La priorité absolue est de sécuriser l’authentification, réduire l’exposition CORS, bloquer les abus OTP et standardiser la gestion d’erreurs/secrets.

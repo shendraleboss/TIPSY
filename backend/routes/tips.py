@@ -107,7 +107,7 @@ async def create_tip_checkout(tip_request: TipCheckoutRequest):
         }
     except Exception as e:
         logger.error(f"Error creating checkout session: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Impossible d'initialiser le paiement pour le moment.")
 
 @router.get("/checkout-status/{session_id}")
 async def get_checkout_status(session_id: str):

@@ -2,11 +2,12 @@ import os
 import stripe
 import logging
 from typing import List
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Depends
 
 from config.db import db
 from models.server import Server, ServerCreate
 from models.tip import Tip
+from config.security import get_current_phone
 
 router = APIRouter(prefix="/servers", tags=["Servers"])
 logger = logging.getLogger(__name__)
@@ -14,7 +15,13 @@ logger = logging.getLogger(__name__)
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
 
 @router.post("/profile", response_model=Server)
-async def create_or_update_server_profile(server_data: ServerCreate):
+async def create_or_update_server_profile(
+    server_data: ServerCreate,
+    current_phone: str = Depends(get_current_phone)
+    ):
+    if server_data.phone != current_phone:
+        raise HTTPException(status_code=403, detail="Vous n'êtes pas autorisé à modifier ce profil.")
+    
     existing = await db.servers.find_one({"phone": server_data.phone}, {"_id": 0})
     if existing:
         update_data = server_data.model_dump()
@@ -30,7 +37,9 @@ async def create_or_update_server_profile(server_data: ServerCreate):
         return server
 
 @router.get("/by-phone/{phone}", response_model=Server)
-async def get_server_by_phone(phone: str):
+async def get_server_by_phone(phone: str, current_phone: str = Depends(get_current_phone)):
+    if phone != current_phone:
+        raise HTTPException(status_code=403, detail="Accès refusé.")
     server_doc = await db.servers.find_one({"phone": phone}, {"_id": 0})
     if not server_doc:
         raise HTTPException(status_code=404, detail="Server not found")
@@ -44,7 +53,7 @@ async def get_server(server_id: str):
     return Server(**server_doc)
 
 @router.get("/{server_id}/tips", response_model=List[Tip])
-async def get_server_tips(server_id: str):
+async def get_server_tips(server_id: str, current_phone: str = Depends(get_current_phone)):
     tips = await db.tips.find(
         {"server_id": server_id, "payment_status": "paid"},
         {"_id": 0}
@@ -52,7 +61,7 @@ async def get_server_tips(server_id: str):
     return [Tip(**tip) for tip in tips]
 
 @router.get("/{server_id}/stats")
-async def get_server_stats(server_id: str):
+async def get_server_stats(server_id: str,current_phone: str = Depends(get_current_phone)):
     tips = await db.tips.find(
         {"server_id": server_id, "payment_status": "paid"},
         {"_id": 0}
@@ -68,7 +77,7 @@ async def get_server_stats(server_id: str):
     }
 
 @router.post("/{server_id}/stripe-connect/onboard")
-async def create_stripe_connect_account(server_id: str, request: Request):
+async def create_stripe_connect_account(server_id: str, request: Request, current_phone: str = Depends(get_current_phone)):
     server_doc = await db.servers.find_one({"id": server_id}, {"_id": 0})
     if not server_doc:
         raise HTTPException(status_code=404, detail="Server not found")
@@ -108,7 +117,7 @@ async def create_stripe_connect_account(server_id: str, request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/{server_id}/stripe-connect/status")
-async def get_stripe_connect_status(server_id: str):
+async def get_stripe_connect_status(server_id: str, current_phone: str = Depends(get_current_phone)):
     server_doc = await db.servers.find_one({"id": server_id}, {"_id": 0})
     if not server_doc:
         raise HTTPException(status_code=404, detail="Server not found")

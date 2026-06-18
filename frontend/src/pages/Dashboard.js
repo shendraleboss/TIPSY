@@ -118,7 +118,7 @@ const Dashboard = () => {
               <Card className="glass-card p-6 rounded-3xl" data-testid="tip-count-card">
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">{t('dashboard.tip.count')}</p>
-                  <p className="font-quasimoda font-bold text-3xl text-white">
+                  <p className="font-quasimoda font-bold text-3xl text-primary">
                     {stats?.tip_count || 0}
                   </p>
                 </div>
@@ -128,7 +128,7 @@ const Dashboard = () => {
             <Card className="glass-card p-6 rounded-3xl" data-testid="average-tip-card">
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground">{t('dashboard.average.tip')}</p>
-                <p className="font-quasimoda font-bold text-2xl text-white">
+                <p className="font-quasimoda font-bold text-2xl text-primary">
                   {stats?.average_tip || 0}{t('common.currency')}
                 </p>
               </div>
@@ -153,7 +153,7 @@ const Dashboard = () => {
                       <LinkIcon className="h-6 w-6 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-quasimoda font-bold text-white">
+                      <h3 className="font-quasimoda font-bold text-primary text-lg">
                         Connecte ton compte Stripe
                       </h3>
                       <p className="text-sm text-muted-foreground mt-1">
@@ -188,7 +188,7 @@ const Dashboard = () => {
 
             {/* Recent Tips */}
             <div className="space-y-4">
-              <h2 className="font-quasimoda font-bold text-xl text-white">{t('dashboard.recent.tips')}</h2>
+              <h2 className="font-quasimoda font-bold text-xl text-primary">{t('dashboard.recent.tips')}</h2>
 
               {tips.length === 0 ? (
                 <Card className="glass-card p-6 rounded-3xl text-center" data-testid="no-tips-message">
@@ -201,7 +201,7 @@ const Dashboard = () => {
                     <Card key={tip.id || index} className="glass-card p-4 rounded-2xl" data-testid={`tip-item-${index}`}>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-quasimoda font-bold text-lg text-white">
+                          <p className="font-quasimoda font-bold text-lg text-primary">
                             {tip.amount}{t('common.currency')}
                           </p>
                           <p className="text-sm text-muted-foreground">

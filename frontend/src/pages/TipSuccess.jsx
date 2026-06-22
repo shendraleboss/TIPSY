@@ -72,7 +72,7 @@ const TipSuccess = () => {
                 <p className="text-xl text-muted-foreground">{t('success.subtitle')}</p>
               </div>
               <div className="pt-6 border-t border-white/10">
-                <p className="font-quasimoda font-medium text-lg text-secondary">
+                <p className="font-quasimoda font-medium text-lg text-muted-foreground">
                   {t('success.slogan')}
                 </p>
               </div>

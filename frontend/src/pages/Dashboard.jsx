@@ -85,7 +85,7 @@ const Dashboard = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-quasimoda font-bold text-2xl text-white">{t('dashboard.title')}</h1>
+            <h1 className="font-quasimoda font-bold text-2xl text-primary">{t('dashboard.title')}</h1>
             <p className="text-muted-foreground">Hey, {server.first_name}!</p>
           </div>
           <Button

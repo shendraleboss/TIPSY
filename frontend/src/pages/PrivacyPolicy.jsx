@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Footer } from '@/components/Footer';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const PrivacyPolicy = () => {
     <div className="min-h-screen bg-background relative overflow-hidden flex flex-col">
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
+        <ThemeToggle />
       </div>
 
       <Button

@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Sparkles, CheckCircle } from 'lucide-react';
-
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const TipSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -49,6 +49,7 @@ const TipSuccess = () => {
   };
 
   return (
+    
     <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center px-6">
       <div className="max-w-md w-full relative z-10">
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 text-center">
@@ -59,7 +60,7 @@ const TipSuccess = () => {
                 <p className="text-lg text-muted-foreground">{t('success.processing')}</p>
               </div>
             </Card>
-          )}
+          )}<ThemeToggle />
 
           {status === 'success' && (
             <Card className="glass-card p-12 rounded-3xl space-y-6" data-testid="success-status">
@@ -71,7 +72,7 @@ const TipSuccess = () => {
                 <p className="text-xl text-muted-foreground">{t('success.subtitle')}</p>
               </div>
               <div className="pt-6 border-t border-white/10">
-                <p className="font-quasimoda font-medium text-lg text-secondary">
+                <p className="font-quasimoda font-medium text-lg text-muted-foreground">
                   {t('success.slogan')}
                 </p>
               </div>

@@ -6,6 +6,7 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Sparkles, QrCode, Wallet, Shield, CheckCircle } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Landing = () => {
       {/* Language switcher */}
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
+        <ThemeToggle />
       </div>
 
       {/* Main content */}
@@ -25,7 +27,7 @@ const Landing = () => {
           <div className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Logo/Brand */}
             <div className="space-y-4">
-              <h1 className="font-quasimoda font-black text-5xl md:text-6xl tracking-tight text-white">
+              <h1 className="font-quasimoda font-black text-5xl md:text-6xl tracking-tight text-primary">
                 {t('landing.hero.title')}
               </h1>
               <p className="font-quasimoda font-medium text-xl text-primary tracking-wide">
@@ -36,7 +38,7 @@ const Landing = () => {
             {/* Hero Image */}
             <div className="relative w-full aspect-video rounded-3xl overflow-hidden border border-white/10">
               <img
-                src="https://customer-assets.emergentagent.com/job_tipsy-pay/artifacts/2fnej1fb_IMAGE1.png"
+                src="images/Landing_img1.png"
                 alt="Tipsy Hero"
                 className="w-full h-full object-cover"
               />
@@ -45,7 +47,7 @@ const Landing = () => {
 
             {/* Value Prop */}
             <div className="space-y-4">
-              <p className="text-xl font-bold text-white leading-relaxed">
+              <p className="text-xl font-bold text-primary leading-relaxed">
                 {t('landing.hero.description')}
               </p>
               <p className="text-base text-foreground/80 leading-relaxed">
@@ -114,7 +116,7 @@ const Landing = () => {
 
           {/* How it Works */}
           <div className="mt-20 space-y-8">
-            <h2 className="font-quasimoda font-bold text-3xl text-center text-white">
+            <h2 className="font-quasimoda font-bold text-3xl text-center text-primary">
               {t('landing.how.title')}
             </h2>
 
@@ -125,7 +127,7 @@ const Landing = () => {
                     <Sparkles className="h-6 w-6 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-quasimoda font-medium text-lg mb-2 text-white">
+                    <h3 className="font-quasimoda font-medium text-lg mb-2 text-primary">
                       {t('landing.how.step1.title')}
                     </h3>
                     <p className="text-muted-foreground">
@@ -141,7 +143,7 @@ const Landing = () => {
                     <QrCode className="h-6 w-6 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-quasimoda font-medium text-lg mb-2 text-white">
+                    <h3 className="font-quasimoda font-medium text-lg mb-2 text-primary">
                       {t('landing.how.step2.title')}
                     </h3>
                     <p className="text-muted-foreground">
@@ -157,7 +159,7 @@ const Landing = () => {
                     <Wallet className="h-6 w-6 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-quasimoda font-medium text-lg mb-2 text-white">
+                    <h3 className="font-quasimoda font-medium text-lg mb-2 text-primary">
                       {t('landing.how.step3.title')}
                     </h3>
                     <p className="text-muted-foreground">
@@ -171,7 +173,7 @@ const Landing = () => {
 
           {/* Why Tipsy */}
           <div className="mt-20 space-y-6">
-            <h2 className="font-quasimoda font-bold text-2xl text-center text-white">
+            <h2 className="font-quasimoda font-bold text-2xl text-center text-primary">
               {t('landing.why.title')}
             </h2>
             <Card className="glass-card p-6 rounded-3xl">

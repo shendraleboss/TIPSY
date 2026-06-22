@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Download, Share2, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const QRCodePage = () => {
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ const QRCodePage = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
+        <ThemeToggle />
       </div>
 
       <Button

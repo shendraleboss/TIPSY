@@ -54,7 +54,7 @@ async def create_tip_checkout(tip_request: TipCheckoutRequest):
         cancel_url = f"{tip_request.host_url}/t/{tip_request.server_id}"
         
         session_params = {
-            "payment_method_types": ["card"],
+            # "payment_method_types": ["card"],
             "line_items": [{
                 "price_data": {
                     "currency": "chf",

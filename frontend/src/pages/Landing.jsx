@@ -6,6 +6,7 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Sparkles, QrCode, Wallet, Shield, CheckCircle } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Landing = () => {
       {/* Language switcher */}
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
+        <ThemeToggle />
       </div>
 
       {/* Main content */}

@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card';
 import { Sparkles, ArrowRight, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import { set } from 'date-fns';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 
 const TipPage = () => {
@@ -122,6 +123,7 @@ const TipPage = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
+        <ThemeToggle />
       </div>
 
       <div className="max-w-md mx-auto px-6 py-12 relative z-10">

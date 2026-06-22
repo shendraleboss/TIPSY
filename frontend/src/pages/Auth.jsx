@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -68,6 +69,7 @@ const Auth = () => {
       {/* Language switcher */}
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
+        <ThemeToggle />
       </div>
 
       {/* Back button */}

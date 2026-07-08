@@ -46,15 +46,15 @@ async def create_tip_checkout(tip_request: TipCheckoutRequest):
     stripe_fee = round(tip_amount * 0.029 + 0.30, 2)
     total_to_charge = round(tip_amount + tipsy_fee + stripe_fee, 2)
     
-    amount_in_cents = int(total_to_charge * 100)
-    tipsy_fee_cents = int(tipsy_fee * 100)
+    amount_in_cents = int(round(total_to_charge * 100))
+    platform_fee_cents = int(round((tipsy_fee + stripe_fee) * 100))
     
     try:
         success_url = f"{tip_request.host_url}/tip-success?session_id={{CHECKOUT_SESSION_ID}}"
         cancel_url = f"{tip_request.host_url}/t/{tip_request.server_id}"
         
         session_params = {
-            "payment_method_types": ["card"],
+            # "payment_method_types": ["card"],
             "line_items": [{
                 "price_data": {
                     "currency": "chf",
@@ -81,7 +81,7 @@ async def create_tip_checkout(tip_request: TipCheckoutRequest):
         stripe_account_id = server_doc.get("stripe_account_id")
         if stripe_account_id and server_doc.get("stripe_onboarding_complete"):
             session_params["payment_intent_data"] = {
-                "application_fee_amount": tipsy_fee_cents,
+                "application_fee_amount": platform_fee_cents, 
                 "transfer_data": {"destination": stripe_account_id},
             }
         
@@ -177,10 +177,30 @@ async def stripe_webhook(request: Request, stripe_signature: Optional[str] = Hea
         logger.info(f"Webhook received: {event.type}")
         if event.type == "checkout.session.completed":
             session = event.data.object
+            
+            # 1. On met à jour la transaction
             await db.payment_transactions.update_one(
                 {"session_id": session.id},
                 {"$set": {"payment_status": "paid", "updated_at": datetime.now(timezone.utc).isoformat()}}
             )
+            
+            # 2. On crée le pourboire (Nouveau code)
+            transaction = await db.payment_transactions.find_one({"session_id": session.id})
+            if transaction:
+                existing_tip = await db.tips.find_one({"session_id": session.id})
+                if not existing_tip:
+                    metadata = transaction.get("metadata", {})
+                    tip = Tip(
+                        server_id=transaction["server_id"],
+                        amount=float(metadata.get("tip_amount", 0)),
+                        total_paid=transaction["amount"],
+                        tipsy_fee=float(metadata.get("tipsy_fee", 0)),
+                        stripe_fee=float(metadata.get("stripe_fee", 0)),
+                        currency=transaction["currency"],
+                        session_id=session.id,
+                        payment_status="paid"
+                    )
+                    await db.tips.insert_one(tip.model_dump())
         return {"success": True}
     except stripe.error.SignatureVerificationError as e:
         logger.error(f"Invalid webhook signature: {e}")

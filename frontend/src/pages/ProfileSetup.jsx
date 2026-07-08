@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 
 const ProfileSetup = () => {
@@ -46,6 +47,7 @@ const ProfileSetup = () => {
     <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center px-6">
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
+        <ThemeToggle />
       </div>
 
       <div className="max-w-md w-full relative z-10">

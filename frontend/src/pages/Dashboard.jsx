@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { QrCode, LogOut, Sparkles, Link as LinkIcon } from 'lucide-react';
 import { toast } from 'sonner';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 
 const Dashboard = () => {
@@ -77,13 +78,14 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
+        <ThemeToggle />
       </div>
 
       <div className="max-w-md mx-auto px-6 py-8 relative z-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-quasimoda font-bold text-2xl text-white">{t('dashboard.title')}</h1>
+            <h1 className="font-quasimoda font-bold text-2xl text-primary">{t('dashboard.title')}</h1>
             <p className="text-muted-foreground">Hey, {server.first_name}!</p>
           </div>
           <Button
